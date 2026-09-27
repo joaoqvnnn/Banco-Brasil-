@@ -41,6 +41,9 @@
     --switch-thumb-shadow: rgba(0,0,0,0.15);
     --checkbox-border: #d1d5db;
     --checkbox-bg: #ffffff;
+
+    /* largura do container central */
+    --container-w: 100%;
   }
 
   html[data-tema="escuro"] {
@@ -144,6 +147,11 @@
   html[data-tema="escuro"] .switch-thumb .icon-sun { display: none; }
   html[data-tema="escuro"] .switch-thumb .icon-moon { display: block; }
 
+  /* ============================================================
+     CONTAINER PRINCIPAL — responsivo
+     Mobile: largura total
+     Desktop: largura fixa centralizada + mais respiro
+     ============================================================ */
   .main-content {
     flex: 1;
     display: flex;
@@ -261,9 +269,7 @@
   .input-wrapper input.input-normal:focus { border-color: var(--border-focus); }
   .input-wrapper input.input-normal::placeholder { color: var(--text-placeholder); }
 
-  /* ============================================================
-     SUGESTÕES DE E-MAIL (dropdown vertical)
-     ============================================================ */
+  /* Sugestões de e-mail */
   .email-suggestions {
     position: absolute;
     top: calc(100% + 4px);
@@ -279,9 +285,7 @@
     display: none;
     animation: fadeUp .15s ease;
   }
-  html[data-tema="escuro"] .email-suggestions {
-    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-  }
+  html[data-tema="escuro"] .email-suggestions { box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
   .email-suggestions.show { display: block; }
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(-4px); }
@@ -300,19 +304,12 @@
   }
   .email-suggestion-item:last-child { border-bottom: none; }
   .email-suggestion-item:hover,
-  .email-suggestion-item:active {
-    background: rgba(127,127,127,.08);
-  }
+  .email-suggestion-item:active { background: rgba(127,127,127,.08); }
   .email-suggestion-item svg {
     width: 16px; height: 16px;
     stroke: var(--text-muted); fill: none;
     stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
     flex-shrink: 0;
-  }
-  .email-suggestion-item .dominio {
-    color: var(--text-muted);
-    font-size: 13px;
-    margin-left: auto;
   }
 
   .senha-real {
@@ -597,9 +594,7 @@
     box-shadow: 0 0 0 3px rgba(220,38,38,.15);
   }
 
-  .code-inputs.tremendo {
-    animation: shakeTudo .45s cubic-bezier(.36,.07,.19,.97);
-  }
+  .code-inputs.tremendo { animation: shakeTudo .45s cubic-bezier(.36,.07,.19,.97); }
   @keyframes shakeTudo {
     0%, 100% { transform: translateX(0); }
     15% { transform: translateX(-8px); }
@@ -686,10 +681,7 @@
   }
   .termos-scroll::-webkit-scrollbar { width: 6px; }
   .termos-scroll::-webkit-scrollbar-track { background: transparent; }
-  .termos-scroll::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 3px;
-  }
+  .termos-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
   .termos-scroll h3 {
     font-size: 13.5px;
@@ -701,18 +693,8 @@
     letter-spacing: 0.4px;
   }
   .termos-scroll h3:first-child { margin-top: 0; }
-
-  .termos-scroll p {
-    margin-bottom: 12px;
-    text-align: justify;
-    text-justify: inter-word;
-  }
-
-  .termos-scroll ul {
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 12px;
-  }
+  .termos-scroll p { margin-bottom: 12px; text-align: justify; text-justify: inter-word; }
+  .termos-scroll ul { list-style: none; padding-left: 0; margin-bottom: 12px; }
   .termos-scroll ul li {
     position: relative;
     padding-left: 18px;
@@ -726,11 +708,7 @@
     color: var(--text-muted);
     font-weight: 700;
   }
-
-  .termos-scroll .destaque {
-    color: var(--text);
-    font-weight: 700;
-  }
+  .termos-scroll .destaque { color: var(--text); font-weight: 700; }
 
   .termos-rodape {
     margin-top: 20px;
@@ -742,11 +720,7 @@
     line-height: 1.6;
   }
 
-  .termos-acoes {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-  }
+  .termos-acoes { display: flex; gap: 10px; margin-top: 20px; }
 
   .btn-secundario {
     flex: 1;
@@ -760,10 +734,7 @@
     cursor: pointer;
     transition: background .2s, border-color .2s;
   }
-  .btn-secundario:hover {
-    background: var(--bg-elev);
-    border-color: var(--text-muted);
-  }
+  .btn-secundario:hover { background: var(--bg-elev); border-color: var(--text-muted); }
 
   .btn-primario-mini {
     flex: 1;
@@ -884,6 +855,126 @@
     margin-right: 8px;
   }
   @keyframes btnSpin { to { transform: rotate(360deg); } }
+
+  /* ============================================================
+     📱 RESPONSIVO — RECONHECE O DISPOSITIVO
+     ============================================================ */
+
+  /* Tablet (600px+) */
+  @media (min-width: 600px) {
+    body {
+      padding: 40px 32px;
+      background: #f4f4f6;
+      align-items: center;
+    }
+    html[data-tema="escuro"] body {
+      background: #0a0a0a;
+    }
+
+    .main-content,
+    .termos-content,
+    .success-screen,
+    .footer {
+      max-width: 500px;
+      background: var(--bg);
+      border-radius: 24px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      padding: 48px 44px;
+    }
+    html[data-tema="escuro"] .main-content,
+    html[data-tema="escuro"] .termos-content,
+    html[data-tema="escuro"] .success-screen,
+    html[data-tema="escuro"] .footer {
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    }
+
+    .footer {
+      padding: 32px 44px 40px;
+      margin-top: 24px;
+    }
+
+    .termos-content {
+      padding: 32px 44px;
+    }
+
+    .header h1 { font-size: 26px; }
+    .screen-title { font-size: 24px; }
+    .success-screen h2 { font-size: 28px; }
+    .success-screen p { font-size: 15px; max-width: 360px; }
+
+    .termos-scroll {
+      max-height: 60vh;
+      font-size: 14px;
+    }
+
+    .code-inputs input { height: 64px; font-size: 24px; }
+    .senha-mask { min-height: 58px; }
+    .input-wrapper input.input-normal { padding: 18px; }
+    .btn { padding: 18px; font-size: 16.5px; }
+  }
+
+  /* Desktop (900px+) */
+  @media (min-width: 900px) {
+    body {
+      padding: 60px 40px;
+    }
+
+    .main-content,
+    .termos-content,
+    .success-screen,
+    .footer {
+      max-width: 560px;
+      padding: 56px 56px;
+    }
+
+    .footer {
+      padding: 36px 56px 44px;
+    }
+
+    .termos-content {
+      padding: 40px 56px;
+    }
+
+    .header { margin-bottom: 44px; }
+    .header svg { width: 38px; height: 38px; margin-bottom: 16px; }
+    .header h1 { font-size: 28px; }
+
+    .screen-title { font-size: 26px; }
+    .screen-sub { font-size: 15px; margin-bottom: 32px; }
+    .field { margin-bottom: 24px; }
+
+    .code-inputs { gap: 12px; }
+    .code-inputs input { height: 68px; font-size: 26px; }
+
+    .termos-scroll {
+      max-height: 65vh;
+      font-size: 14.5px;
+      padding: 32px;
+    }
+
+    .termos-titulo { font-size: 24px; }
+    .termos-subtitulo { font-size: 13px; }
+
+    .success-screen h2 { font-size: 32px; }
+    .success-screen p { font-size: 15.5px; max-width: 400px; }
+    .success-icon { width: 112px; height: 112px; margin-bottom: 32px; }
+    .success-icon svg { width: 56px; height: 56px; }
+
+    .theme-switch { top: 28px; right: 28px; }
+  }
+
+  /* Desktop grande (1200px+) — layout centralizado e mais espaçoso */
+  @media (min-width: 1200px) {
+    .main-content,
+    .termos-content,
+    .success-screen,
+    .footer {
+      max-width: 600px;
+    }
+
+    .main-content { padding: 64px; }
+    .termos-content { padding: 48px 64px; }
+  }
 </style>
 </head>
 <body>
@@ -907,7 +998,7 @@
     </span>
   </button>
 
-  <!-- ============ TELA 1: FORMULÁRIO ============ -->
+  <!-- TELA 1: FORMULÁRIO -->
   <div class="main-content" id="formScreen">
     <div class="header">
       <svg viewBox="0 0 24 24">
@@ -989,7 +1080,7 @@
     <button class="forgot-link" onclick="esqueceuSenha()">Esqueceu a senha?</button>
   </div>
 
-  <!-- ============ TELA 2: CONFIRMAR E-MAIL ============ -->
+  <!-- TELA 2: CONFIRMAR E-MAIL -->
   <div class="main-content hidden" id="confirmEmailScreen">
     <button class="back-link" onclick="voltarParaForm()">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -1028,7 +1119,7 @@
     <div class="status-codigo" id="confirmStatusCodigo"></div>
   </div>
 
-  <!-- ============ TELA 3: SUCESSO ============ -->
+  <!-- TELA 3: SUCESSO -->
   <div class="success-screen" id="successScreen">
     <div class="success-icon">
       <svg viewBox="0 0 24 24">
@@ -1040,7 +1131,7 @@
     <button class="btn" onclick="voltarInicio()">Voltar ao início</button>
   </div>
 
-  <!-- ============ TELA 4: ESQUECEU ============ -->
+  <!-- TELA 4: ESQUECEU -->
   <div class="main-content hidden" id="forgotScreen">
     <button class="back-link" onclick="mostrarTela('formScreen')">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -1062,7 +1153,7 @@
     <button class="btn" id="btnEnviarCodigo" onclick="enviarCodigo()">Enviar código</button>
   </div>
 
-  <!-- ============ TELA 5: CÓDIGO RECUPERAÇÃO ============ -->
+  <!-- TELA 5: CÓDIGO RECUPERAÇÃO -->
   <div class="main-content hidden" id="codeScreen">
     <button class="back-link" onclick="voltarParaEmail()">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -1101,7 +1192,7 @@
     <div class="status-codigo" id="statusCodigo"></div>
   </div>
 
-  <!-- ============ TELA 6: NOVA SENHA ============ -->
+  <!-- TELA 6: NOVA SENHA -->
   <div class="main-content hidden" id="newPassScreen">
     <button class="back-link" onclick="mostrarTela('codeScreen')">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -1157,7 +1248,7 @@
     <button class="btn" onclick="salvarNovaSenha()">Salvar nova senha</button>
   </div>
 
-  <!-- ============ TELA 7: TERMOS ============ -->
+  <!-- TELA 7: TERMOS -->
   <div class="termos-content hidden" id="termosScreen">
     <button class="back-link" onclick="fecharTermos()">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -1255,18 +1346,12 @@ const EMAIL_KEY    = 'email_recuperacao_afiliado';
    DOMÍNIOS DE E-MAIL SUGERIDOS
    ========================================================= */
 const DOMINIOS_EMAIL = [
-  'gmail.com',
-  'hotmail.com',
-  'outlook.com',
-  'icloud.com',
-  'yahoo.com',
-  'live.com',
-  'bol.com.br',
-  'uol.com.br'
+  'gmail.com', 'hotmail.com', 'outlook.com', 'icloud.com',
+  'yahoo.com', 'live.com', 'bol.com.br', 'uol.com.br'
 ];
 
 /* =========================================================
-   SUGESTÕES DE E-MAIL (dropdown vertical)
+   SUGESTÕES DE E-MAIL
    ========================================================= */
 const SVG_MAIL = `<svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,6 12,13 22,6"/></svg>`;
 
@@ -1274,34 +1359,25 @@ function mostrarSugestoes(inputEl, containerEl, valor) {
   const partes = valor.split('@');
   const usuario = partes[0].trim();
 
-  if (!usuario) {
+  if (!usuario || (partes.length > 1 && partes[1].trim().length > 0)) {
     containerEl.classList.remove('show');
     containerEl.innerHTML = '';
     return;
   }
 
-  if (partes.length > 1 && partes[1].trim().length > 0) {
-    containerEl.classList.remove('show');
-    containerEl.innerHTML = '';
-    return;
-  }
-
-  const sugestoes = DOMINIOS_EMAIL.slice(0, 6);
-
-  containerEl.innerHTML = sugestoes.map(dominio => `
-    <div class="email-suggestion-item" data-email="${usuario}@${dominio}">
+  containerEl.innerHTML = DOMINIOS_EMAIL.slice(0, 6).map(d =>
+    `<div class="email-suggestion-item" data-email="${usuario}@${d}">
       ${SVG_MAIL}
-      <span>${usuario}@<strong>${dominio}</strong></span>
-    </div>
-  `).join('');
+      <span>${usuario}@<strong>${d}</strong></span>
+    </div>`
+  ).join('');
 
   containerEl.classList.add('show');
 
   containerEl.querySelectorAll('.email-suggestion-item').forEach(el => {
     el.addEventListener('mousedown', e => {
       e.preventDefault();
-      const email = el.dataset.email;
-      inputEl.value = email;
+      inputEl.value = el.dataset.email;
       containerEl.classList.remove('show');
       containerEl.innerHTML = '';
       inputEl.focus();
@@ -1310,38 +1386,39 @@ function mostrarSugestoes(inputEl, containerEl, valor) {
 }
 
 function onEmailInput() {
-  const input = document.getElementById('email');
-  const box = document.getElementById('emailSuggestions');
-  mostrarSugestoes(input, box, input.value);
+  mostrarSugestoes(
+    document.getElementById('email'),
+    document.getElementById('emailSuggestions'),
+    document.getElementById('email').value
+  );
 }
 function onEmailFocus() {
   const input = document.getElementById('email');
-  const box = document.getElementById('emailSuggestions');
-  if (input.value.includes('@')) mostrarSugestoes(input, box, input.value);
+  if (input.value.includes('@')) onEmailInput();
 }
 function onEmailBlur() {
   setTimeout(() => {
-    const box = document.getElementById('emailSuggestions');
-    box.classList.remove('show');
-    box.innerHTML = '';
+    const b = document.getElementById('emailSuggestions');
+    b.classList.remove('show');
+    b.innerHTML = '';
   }, 150);
 }
-
 function onEmailRecInput() {
-  const input = document.getElementById('emailRecuperacao');
-  const box = document.getElementById('emailSuggestionsRec');
-  mostrarSugestoes(input, box, input.value);
+  mostrarSugestoes(
+    document.getElementById('emailRecuperacao'),
+    document.getElementById('emailSuggestionsRec'),
+    document.getElementById('emailRecuperacao').value
+  );
 }
 function onEmailRecFocus() {
   const input = document.getElementById('emailRecuperacao');
-  const box = document.getElementById('emailSuggestionsRec');
-  if (input.value.includes('@')) mostrarSugestoes(input, box, input.value);
+  if (input.value.includes('@')) onEmailRecInput();
 }
 function onEmailRecBlur() {
   setTimeout(() => {
-    const box = document.getElementById('emailSuggestionsRec');
-    box.classList.remove('show');
-    box.innerHTML = '';
+    const b = document.getElementById('emailSuggestionsRec');
+    b.classList.remove('show');
+    b.innerHTML = '';
   }, 150);
 }
 
@@ -1390,7 +1467,7 @@ function aceitarEVoltar() {
 }
 
 /* =========================================================
-   MÁSCARA DE SENHA (com PONTO • )
+   MÁSCARA DE SENHA
    ========================================================= */
 const senhasReveladas = { senha1: false, senha2: false, novaSenha1: false, novaSenha2: false };
 const CAMPOS_SENHA = ['senha1', 'senha2', 'novaSenha1', 'novaSenha2'];
@@ -1430,9 +1507,7 @@ function resetarOlhinhos() {
     senhasReveladas[id] = false;
     atualizarMascara(id);
   });
-  document.querySelectorAll('.toggle-eye').forEach(btn => {
-    btn.innerHTML = EYE_OPEN;
-  });
+  document.querySelectorAll('.toggle-eye').forEach(btn => { btn.innerHTML = EYE_OPEN; });
 }
 
 function configurarCamposSenha() {
@@ -1479,7 +1554,6 @@ function mascararEmail(email) {
 
 /* =========================================================
    FORÇA DA SENHA
-   Sempre mostra os indicadores (mesmo com senha completa)
    ========================================================= */
 function calcularForca(senha) {
   const n = senha.length;
@@ -1504,9 +1578,7 @@ function avaliarCampos(id1, id2, segmentsId, txtId, matchId) {
   const s2 = document.getElementById(id2).value;
   const nivel = calcularForca(s1);
 
-  // Sempre pinta os segmentos (com senha completa, fica tudo verde)
   pintarSegmentos(segmentsId, nivel.nivel);
-
   const txtEl = document.getElementById(txtId);
   txtEl.textContent = nivel.texto;
   txtEl.style.color = nivel.cor;
@@ -1593,7 +1665,7 @@ function salvarSenha() {
 }
 
 /* =========================================================
-   CONFIRMAÇÃO DE E-MAIL (CADASTRO)
+   CONFIRMAÇÃO DE E-MAIL
    ========================================================= */
 let confirmCodigoAtual   = null;
 let confirmCodigoExpira  = 0;
@@ -1614,7 +1686,6 @@ confirmInputs.forEach((input, idx) => {
     const codigo = confirmInputs.map(i => i.value).join('');
     if (codigo.length === 6) verificarCodigoEmailAutomatico(codigo);
   });
-
   input.addEventListener('keydown', e => {
     if (e.key === 'Backspace' && !input.value && idx > 0) {
       confirmInputs[idx - 1].focus();
@@ -1624,16 +1695,12 @@ confirmInputs.forEach((input, idx) => {
     if (e.key === 'ArrowLeft'  && idx > 0) confirmInputs[idx - 1].focus();
     if (e.key === 'ArrowRight' && idx < confirmInputs.length - 1) confirmInputs[idx + 1].focus();
   });
-
   input.addEventListener('paste', e => {
     e.preventDefault();
     const txt = (e.clipboardData || window.clipboardData).getData('text') || '';
     const digitos = txt.replace(/\D/g, '').slice(0, 6).split('');
     digitos.forEach((d, i) => {
-      if (confirmInputs[i]) {
-        confirmInputs[i].value = d;
-        confirmInputs[i].classList.add('filled');
-      }
+      if (confirmInputs[i]) { confirmInputs[i].value = d; confirmInputs[i].classList.add('filled'); }
     });
     const proximo = Math.min(digitos.length, confirmInputs.length - 1);
     confirmInputs[proximo].focus();
@@ -1653,12 +1720,10 @@ function limparConfirmCodigo() {
 async function iniciarConfirmacaoEmail() {
   confirmCodigoAtual  = gerarCodigo();
   confirmCodigoExpira = Date.now() + 5 * 60 * 1000;
-
   document.getElementById('confirmEmailMostrado').textContent = mascararEmail(emailPendente);
   limparConfirmCodigo();
   confirmStatusCodigo.textContent = 'Enviando código para seu e-mail...';
   confirmStatusCodigo.className = 'status-codigo';
-
   mostrarTela('confirmEmailScreen');
 
   try {
@@ -1686,10 +1751,8 @@ function iniciarContadoresEmail() {
 function atualizarContadoresEmail() {
   const restante = confirmCodigoExpira - Date.now();
   const exp = document.getElementById('confirmExpiraTexto');
-  if (restante <= 0) {
-    exp.textContent = 'Código expirado';
-    exp.style.color = '#dc2626';
-  } else {
+  if (restante <= 0) { exp.textContent = 'Código expirado'; exp.style.color = '#dc2626'; }
+  else {
     const m = Math.floor(restante / 60000);
     const s = Math.floor((restante % 60000) / 1000);
     exp.textContent = `Expira em ${m}:${String(s).padStart(2, '0')}`;
@@ -1710,11 +1773,9 @@ function atualizarContadoresEmail() {
 async function reenviarCodigoEmail() {
   if (confirmTempoReenvio > 0) return;
   const btn = document.getElementById('confirmResendBtn');
-
   confirmCodigoAtual = gerarCodigo();
   confirmCodigoExpira = Date.now() + 5 * 60 * 1000;
   limparConfirmCodigo();
-
   botaoLoading(btn, 'Enviando...');
   btn.dataset.loading = '1';
   confirmStatusCodigo.textContent = 'Reenviando código...';
@@ -1725,9 +1786,7 @@ async function reenviarCodigoEmail() {
     confirmStatusCodigo.textContent = 'Código reenviado com sucesso!';
     confirmStatusCodigo.className = 'status-codigo';
     setTimeout(() => {
-      if (confirmStatusCodigo.textContent === 'Código reenviado com sucesso!') {
-        confirmStatusCodigo.textContent = '';
-      }
+      if (confirmStatusCodigo.textContent === 'Código reenviado com sucesso!') confirmStatusCodigo.textContent = '';
     }, 2500);
     iniciarContadoresEmail();
     confirmInputs[0].focus();
@@ -1756,31 +1815,22 @@ function verificarCodigoEmailAutomatico(codigo) {
       liberarConfirmTentar();
       return;
     }
-
     if (codigo === confirmCodigoAtual) {
       confirmInputs.forEach(i => { i.classList.remove('erro'); i.classList.add('sucesso'); });
       confirmStatusCodigo.textContent = '';
       confirmStatusCodigo.className = 'status-codigo';
-
       setTimeout(() => {
         clearInterval(confirmIntervaloTimer);
-
         try {
           localStorage.setItem(STORAGE_KEY, senhaPendente);
           localStorage.setItem(EMAIL_KEY, emailPendente);
         } catch(e) {}
-
         senhaPendente = '';
         emailPendente = '';
-
-        mostrarSucesso(
-          'Senha configurada',
-          'E-mail confirmado e senha criada com sucesso. Está tudo pronto para uso.'
-        );
+        mostrarSucesso('Senha configurada', 'E-mail confirmado e senha criada com sucesso. Está tudo pronto para uso.');
       }, 900);
       return;
     }
-
     confirmInputs.forEach(i => i.classList.add('erro'));
     confirmStatusCodigo.textContent = '';
     confirmStatusCodigo.className = 'status-codigo';
@@ -1846,26 +1896,20 @@ codeInputs.forEach((input, idx) => {
     const codigo = codeInputs.map(i => i.value).join('');
     if (codigo.length === 6) verificarCodigoAutomatico(codigo);
   });
-
   input.addEventListener('keydown', e => {
     if (e.key === 'Backspace' && !input.value && idx > 0) {
-      codeInputs[idx - 1].focus();
-      codeInputs[idx - 1].value = '';
+      codeInputs[idx - 1].focus(); codeInputs[idx - 1].value = '';
       codeInputs[idx - 1].classList.remove('filled', 'sucesso', 'erro');
     }
     if (e.key === 'ArrowLeft'  && idx > 0) codeInputs[idx - 1].focus();
     if (e.key === 'ArrowRight' && idx < codeInputs.length - 1) codeInputs[idx + 1].focus();
   });
-
   input.addEventListener('paste', e => {
     e.preventDefault();
     const txt = (e.clipboardData || window.clipboardData).getData('text') || '';
     const digitos = txt.replace(/\D/g, '').slice(0, 6).split('');
     digitos.forEach((d, i) => {
-      if (codeInputs[i]) {
-        codeInputs[i].value = d;
-        codeInputs[i].classList.add('filled');
-      }
+      if (codeInputs[i]) { codeInputs[i].value = d; codeInputs[i].classList.add('filled'); }
     });
     const proximo = Math.min(digitos.length, codeInputs.length - 1);
     codeInputs[proximo].focus();
@@ -1930,10 +1974,8 @@ function iniciarContadores() {
 function atualizarContadores() {
   const restante = codigoExpira - Date.now();
   const exp = document.getElementById('expiraTexto');
-  if (restante <= 0) {
-    exp.textContent = 'Código expirado';
-    exp.style.color = '#dc2626';
-  } else {
+  if (restante <= 0) { exp.textContent = 'Código expirado'; exp.style.color = '#dc2626'; }
+  else {
     const m = Math.floor(restante / 60000);
     const s = Math.floor((restante % 60000) / 1000);
     exp.textContent = `Expira em ${m}:${String(s).padStart(2, '0')}`;
@@ -1954,11 +1996,9 @@ function atualizarContadores() {
 async function reenviarCodigo() {
   if (tempoReenvio > 0) return;
   const btn = document.getElementById('resendBtn');
-
   codigoAtual  = gerarCodigo();
   codigoExpira = Date.now() + 5 * 60 * 1000;
   limparCamposCodigo();
-
   botaoLoading(btn, 'Enviando...');
   btn.dataset.loading = '1';
   statusCodigo.textContent = 'Reenviando código...';
@@ -1968,9 +2008,7 @@ async function reenviarCodigo() {
     await enviarCodigoPorEmail(emailRecuperacao, codigoAtual, 'recuperacao');
     statusCodigo.textContent = 'Código reenviado com sucesso!';
     setTimeout(() => {
-      if (statusCodigo.textContent === 'Código reenviado com sucesso!') {
-        statusCodigo.textContent = '';
-      }
+      if (statusCodigo.textContent === 'Código reenviado com sucesso!') statusCodigo.textContent = '';
     }, 2500);
     iniciarContadores();
     codeInputs[0].focus();
@@ -2052,11 +2090,9 @@ function salvarNovaSenha() {
   if (emailRecuperacao) {
     try { localStorage.setItem(EMAIL_KEY, emailRecuperacao); } catch(e) {}
   }
-
   codigoAtual = null;
   codigoExpira = 0;
   clearInterval(intervaloTimer);
-
   mostrarSucesso('Senha redefinida', 'Sua nova senha para saque foi salva com sucesso.');
 }
 
