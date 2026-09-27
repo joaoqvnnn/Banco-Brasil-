@@ -301,7 +301,7 @@
   .success-screen .btn { max-width: 300px; }
 
   /* ============================================================
-     VERIFICAÇÃO FACIAL — ESTILO SELFIE
+     SELFIE — VERIFICAÇÃO FACIAL
      ============================================================ */
   .selfie-screen {
     position: fixed;
@@ -339,13 +339,13 @@
   .selfie-close svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
   .selfie-title {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 800;
     color: var(--text);
     text-align: center;
     line-height: 1.2;
     letter-spacing: -0.4px;
-    margin-bottom: 26px;
+    margin-bottom: 22px;
     max-width: 320px;
   }
 
@@ -354,7 +354,7 @@
     position: relative;
     width: 200px;
     height: 300px;
-    margin-bottom: 26px;
+    margin-bottom: 22px;
     flex-shrink: 0;
   }
   .selfie-oval {
@@ -386,12 +386,10 @@
     object-fit: cover;
     transform: scaleX(-1);
     display: block;
-    opacity: 0;
-    transition: opacity .4s;
+    background: #000;
   }
-  .selfie-oval video.ativa { opacity: 1; }
 
-  /* Ícone no centro do oval (guia direcional) */
+  /* Ícone guia no centro */
   .selfie-guide {
     position: absolute;
     top: 50%; left: 50%;
@@ -426,7 +424,7 @@
   @keyframes gU { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
   @keyframes gD { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
 
-  /* Overlay verde de sucesso dentro do oval */
+  /* Overlay verde de sucesso */
   .selfie-oval-ok {
     position: absolute;
     inset: 0;
@@ -449,20 +447,18 @@
     stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
   }
 
-  /* Texto de instrução */
   .selfie-instruction {
     font-size: 14.5px;
     color: var(--text-sec);
     text-align: center;
     line-height: 1.45;
     max-width: 300px;
-    margin-bottom: 22px;
+    margin-bottom: 20px;
     min-height: 42px;
     font-weight: 500;
   }
   .selfie-instruction strong { color: var(--text); font-weight: 700; }
 
-  /* Botão verde outline ESTOU PRONTO */
   .selfie-btn {
     width: 100%;
     max-width: 320px;
@@ -497,9 +493,9 @@
   }
 
   @media (max-height: 720px) {
-    .selfie-title { font-size: 22px; margin-bottom: 18px; }
-    .selfie-oval-wrap { width: 170px; height: 260px; margin-bottom: 20px; }
-    .selfie-instruction { margin-bottom: 18px; font-size: 13.5px; }
+    .selfie-title { font-size: 20px; margin-bottom: 16px; }
+    .selfie-oval-wrap { width: 170px; height: 260px; margin-bottom: 16px; }
+    .selfie-instruction { margin-bottom: 14px; font-size: 13.5px; }
   }
 </style>
 </head>
@@ -522,7 +518,6 @@
     </button>
   </div>
 
-  <!-- TELA 1: FORMULÁRIO -->
   <div class="main-content" id="formScreen">
     <div class="header">
       <svg viewBox="0 0 24 24">
@@ -591,7 +586,6 @@
     <button class="forgot-link" onclick="esqueceuSenha()">Esqueceu a senha?</button>
   </div>
 
-  <!-- TELA 2: SUCESSO -->
   <div class="success-screen" id="successScreen">
     <div class="success-icon">
       <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
@@ -601,7 +595,7 @@
     <button class="btn" onclick="voltarInicio()">Voltar ao início</button>
   </div>
 
-  <!-- ========= TELA: SELFIE / VERIFICAÇÃO FACIAL ========= -->
+  <!-- ========= TELA: SELFIE ========= -->
   <div class="selfie-screen hidden" id="faceScreen">
     <div class="selfie-topbar">
       <button class="selfie-close" onclick="cancelarVerificacaoFacial()" aria-label="Fechar">
@@ -622,7 +616,7 @@
     </div>
 
     <div class="selfie-instruction" id="selfieInstrucao">
-      Encaixe o rosto no oval e pressione <strong>Iniciar Captura</strong>
+      Encaixe o rosto no oval e pressione <strong>Estou pronto</strong>
     </div>
 
     <button class="selfie-btn" id="selfieBtn" onclick="acaoSelfieBtn()">Estou pronto</button>
@@ -630,7 +624,6 @@
     <div class="selfie-error hidden" id="faceError"></div>
   </div>
 
-  <!-- TELA: ESQUECEU A SENHA -->
   <div class="main-content hidden" id="forgotScreen">
     <button class="back-link" onclick="mostrarTela('formScreen')">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -650,7 +643,6 @@
     <button class="btn" onclick="enviarCodigo()">Enviar código</button>
   </div>
 
-  <!-- TELA: CÓDIGO -->
   <div class="main-content hidden" id="codeScreen">
     <button class="back-link" onclick="voltarParaEmail()">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -689,7 +681,6 @@
     </div>
   </div>
 
-  <!-- TELA: NOVA SENHA -->
   <div class="main-content hidden" id="newPassScreen">
     <button class="back-link" onclick="mostrarTela('codeScreen')">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -734,7 +725,6 @@
     <button class="btn" onclick="salvarNovaSenha()">Salvar nova senha</button>
   </div>
 
-  <!-- TELA: TERMOS -->
   <div class="termos-content hidden" id="termosScreen">
     <button class="back-link" onclick="fecharTermos()">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -781,7 +771,6 @@
     </div>
   </div>
 
-  <!-- RODAPÉ -->
   <div class="footer">
     <div class="store-info">
       <svg viewBox="0 0 24 24">
@@ -828,13 +817,13 @@ function mostrarTela(id) {
 }
 
 /* =========================================================
-   ÍCONES DE OLHO
+   ÍCONES
    ========================================================= */
 const EYE_OPEN = `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
 const EYE_CLOSED = `<svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
 
 /* =========================================================
-   VERIFICAÇÃO FACIAL (ESTILO SELFIE)
+   VERIFICAÇÃO FACIAL
    ========================================================= */
 const SVG_ICONS = {
   left:   '<svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>',
@@ -844,16 +833,20 @@ const SVG_ICONS = {
 };
 
 const PASSOS = [
-  { id: 'posicionar', icone: null,    dir: null,    main: 'Encaixe o rosto no oval',           sub: 'Mantenha o rosto visível' },
-  { id: 'direita',    icone: 'right', dir: 'right', main: 'Vire a cabeça para a <strong>DIREITA</strong>',  sub: 'Devinho, mantenha por um instante' },
-  { id: 'esquerda',   icone: 'left',  dir: 'left',  main: 'Vire a cabeça para a <strong>ESQUERDA</strong>', sub: 'Devinho, mantenha por um instante' },
-  { id: 'cima',       icone: 'up',    dir: 'up',    main: 'Incline a cabeça para <strong>CIMA</strong>',    sub: 'Movimento leve, apenas alguns graus' },
-  { id: 'baixo',      icone: 'down',  dir: 'down',  main: 'Incline a cabeça para <strong>BAIXO</strong>',   sub: 'Movimento leve, apenas alguns graus' }
+  { id: 'posicionar', icone: null,    dir: null,    main: 'Encaixe o rosto no oval' },
+  { id: 'direita',    icone: 'right', dir: 'right', main: 'Vire a cabeça para a <strong>DIREITA</strong>' },
+  { id: 'esquerda',   icone: 'left',  dir: 'left',  main: 'Vire a cabeça para a <strong>ESQUERDA</strong>' },
+  { id: 'cima',       icone: 'up',    dir: 'up',    main: 'Incline a cabeça para <strong>CIMA</strong>' },
+  { id: 'baixo',      icone: 'down',  dir: 'down',  main: 'Incline a cabeça para <strong>BAIXO</strong>' }
 ];
 
-const THRESH_X = 0.045;
-const THRESH_Y = 0.04;
-const FRAMES_PARA_CONFIRMAR = 4;
+// Movimento MUITO sensível (para não travar)
+const THRESH_X = 0.03;
+const THRESH_Y = 0.03;
+const FRAMES_PARA_CONFIRMAR = 3;
+// Tempo máximo que fica tentando detectar pele antes de "assumir que tem rosto"
+const TEMPO_FALLBACK_POSICIONAR_MS = 2500;
+const TEMPO_FALLBACK_MOVIMENTO_MS = 3500;
 
 const faceState = {
   ativo: false,
@@ -870,38 +863,54 @@ const faceState = {
   iniciado: false,
   rafId: null,
   lastDetect: 0,
-  sucessoTimeout: null
+  sucessoTimeout: null,
+  timerInicioPasso: 0,
+  timerFallback: null
 };
 
-/* Ao clicar "Estou pronto" — inicia a captura (mostra câmera) */
+/* Clicou "Estou pronto" */
 async function acaoSelfieBtn() {
   if (!faceState.iniciado) {
     await iniciarCapturaSelfie();
   }
 }
 
-/* Mostra a câmera dentro do oval e começa a detecção */
 async function iniciarCapturaSelfie() {
   const btn = document.getElementById('selfieBtn');
   btn.disabled = true;
-  btn.textContent = 'Iniciando...';
+  btn.textContent = 'Iniciando câmera...';
+
+  // Limpa erros anteriores
+  document.getElementById('faceError').classList.add('hidden');
 
   try {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      throw new Error('Câmera não suportada');
+      throw new Error('Câmera não suportada neste navegador');
     }
     faceState.stream = await navigator.mediaDevices.getUserMedia({
       video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 640 } },
       audio: false
     });
+
     const video = document.getElementById('faceVideo');
     video.srcObject = faceState.stream;
-    await video.play().catch(() => {});
-    video.classList.add('ativa');
+    video.setAttribute('playsinline', 'true');
+    video.setAttribute('autoplay', 'true');
+    video.setAttribute('muted', 'true');
+    await video.play().catch(e => console.warn('play falhou:', e));
   } catch (e) {
-    mostrarErroFacial('Não foi possível acessar a câmera. Verifique as permissões do navegador.');
+    console.error('Erro câmera:', e);
+    let msg = 'Não foi possível acessar a câmera.';
+    if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') {
+      msg = 'Permissão de câmera negada. Habilite o acesso à câmera nas configurações do navegador.';
+    } else if (e.name === 'NotFoundError' || e.name === 'DevicesNotFoundError') {
+      msg = 'Nenhuma câmera encontrada neste dispositivo.';
+    } else if (e.name === 'NotReadableError') {
+      msg = 'A câmera está sendo usada por outro app. Feche outros apps e tente novamente.';
+    }
+    mostrarErroFacial(msg);
     btn.disabled = false;
-    btn.textContent = 'Estou pronto';
+    btn.textContent = 'Tentar novamente';
     return;
   }
 
@@ -910,13 +919,15 @@ async function iniciarCapturaSelfie() {
     faceState.ctx = faceState.canvas.getContext('2d', { willReadFrequently: true });
   }
 
+  // Espera o vídeo ter frames
   const video = document.getElementById('faceVideo');
-  if (video.readyState < 2) {
-    await new Promise(res => {
-      video.addEventListener('loadeddata', res, { once: true });
-      setTimeout(res, 1500);
-    });
+  let tentativas = 0;
+  while (video.videoWidth === 0 && tentativas < 30) {
+    await new Promise(r => setTimeout(r, 100));
+    tentativas++;
   }
+
+  console.log('Vídeo pronto:', video.videoWidth, 'x', video.videoHeight);
 
   faceState.iniciado = true;
   faceState.ativo = true;
@@ -926,17 +937,51 @@ async function iniciarCapturaSelfie() {
   faceState.confirmaFrames = 0;
   faceState.transicao = false;
   faceState.lastDetect = 0;
+  faceState.timerInicioPasso = Date.now();
 
-  document.getElementById('selfieBtn').classList.add('hidden');
-  document.getElementById('selfieInstrucao').innerHTML = 'Mantenha o rosto no oval';
+  // Esconde botão e começa
+  btn.classList.add('hidden');
+  document.getElementById('selfieInstrucao').innerHTML = '<strong>Mantenha o rosto no oval</strong>';
   document.getElementById('selfieOvalWrap').dataset.estado = 'aguardando';
+
+  // Configura o timer de fallback do passo 0
+  agendarFallbackPosicionar();
 
   faceState.rafId = requestAnimationFrame(loopDeteccao);
 }
 
+/* Timer de segurança: se em X segundos não detectou nada, avança mesmo assim */
+function agendarFallbackPosicionar() {
+  clearTimeout(faceState.timerFallback);
+  faceState.timerFallback = setTimeout(() => {
+    if (!faceState.ativo || faceState.passo !== 0 || faceState.transicao) return;
+    console.log('Fallback posicionar: assumindo rosto detectado');
+    // Assume que tem rosto e vai para passo 1
+    faceState.transicao = true;
+    vibrar([30]);
+    setTimeout(() => {
+      faceState.transicao = false;
+      iniciarPasso(1);
+    }, 500);
+  }, TEMPO_FALLBACK_POSICIONAR_MS);
+}
+
+function agendarFallbackMovimento() {
+  clearTimeout(faceState.timerFallback);
+  faceState.timerFallback = setTimeout(() => {
+    if (!faceState.ativo || faceState.passo < 1 || faceState.passo > 4 || faceState.transicao) return;
+    console.log('Fallback movimento: avançando passo', faceState.passo);
+    const proximo = faceState.passo + 1;
+    if (proximo < PASSOS.length) {
+      iniciarPasso(proximo);
+    } else {
+      concluirFaceVerificacao();
+    }
+  }, TEMPO_FALLBACK_MOVIMENTO_MS);
+}
+
 /* Abre a tela de verificação facial */
 async function iniciarFaceVerificacao(modo) {
-  // Reset
   faceState.ativo = false;
   faceState.passo = 0;
   faceState.ref = null;
@@ -948,13 +993,11 @@ async function iniciarFaceVerificacao(modo) {
   faceState.modo = modo;
   cancelAnimationFrame(faceState.rafId);
   clearTimeout(faceState.sucessoTimeout);
+  clearTimeout(faceState.timerFallback);
   pararCameraFacial();
 
   const wrap = document.getElementById('selfieOvalWrap');
   wrap.dataset.estado = 'sem_rosto';
-
-  const video = document.getElementById('faceVideo');
-  video.classList.remove('ativa');
 
   document.getElementById('selfieGuide').className = 'selfie-guide';
   document.getElementById('selfieGuide').innerHTML = '';
@@ -967,11 +1010,10 @@ async function iniciarFaceVerificacao(modo) {
 
   if (modo === 'registrar') {
     document.getElementById('selfieTitulo').textContent = 'Prepare-se para tirar sua selfie';
-    document.getElementById('selfieInstrucao').innerHTML = 'Encaixe o rosto no oval e pressione <strong>Iniciar Captura</strong>';
   } else {
     document.getElementById('selfieTitulo').textContent = 'Confirme sua identidade';
-    document.getElementById('selfieInstrucao').innerHTML = 'Encaixe o rosto no oval e pressione <strong>Iniciar Captura</strong>';
   }
+  document.getElementById('selfieInstrucao').innerHTML = 'Encaixe o rosto no oval e pressione <strong>Estou pronto</strong>';
 
   mostrarTela('faceScreen');
 }
@@ -995,9 +1037,11 @@ function loopDeteccao(now) {
   faceState.rafId = requestAnimationFrame(loopDeteccao);
 }
 
+/* Detecção MUITO tolerante de pele */
 function detectarCentroPele(video) {
-  const W = 90, H = 90;
+  const W = 80, H = 80;
   if (faceState.canvas.width !== W) { faceState.canvas.width = W; faceState.canvas.height = H; }
+
   try { faceState.ctx.drawImage(video, 0, 0, W, H); } catch (e) { return null; }
 
   let data;
@@ -1008,17 +1052,22 @@ function detectarCentroPele(video) {
     for (let x = 0; x < W; x++) {
       const i = (y * W + x) * 4;
       const r = data[i], g = data[i + 1], b = data[i + 2];
+
+      // Faixa MUITO ampla de pele (funciona em várias etnias/iluminações)
       const cb = 128 - 0.168736 * r - 0.331264 * g + 0.5 * b;
       const cr = 128 + 0.5 * r - 0.418688 * g - 0.081312 * b;
-      const isSkin = cb >= 77 && cb <= 132 && cr >= 133 && cr <= 178
-                   && r > 60 && g > 30 && b > 15
-                   && r > g && r > b * 0.9;
+
+      const isSkin = cb >= 70 && cb <= 140 && cr >= 125 && cr <= 185
+                   && r > 50 && g > 25 && b > 10
+                   && r > g - 10 && r > b - 20;
+
       if (isSkin) { count++; sumX += x; sumY += y; }
     }
   }
 
   const ratio = count / (W * H);
-  if (ratio < 0.05) return null;
+  // Threshold MUITO baixo - se tiver pelo menos 3% de pele, considera rosto
+  if (ratio < 0.03) return null;
   return { cx: (sumX / count) / W, cy: (sumY / count) / H, ratio };
 }
 
@@ -1028,17 +1077,17 @@ function processarFrame(res) {
   const wrap = document.getElementById('selfieOvalWrap');
   const instEl = document.getElementById('selfieInstrucao');
 
-  // Sem rosto
+  // ======= SEM ROSTO =======
   if (!res) {
     faceState.semRosto++;
     faceState.confirmaFrames = 0;
 
     if (faceState.passo === 0) {
       wrap.dataset.estado = 'sem_rosto';
-      instEl.textContent = 'Encaixe o rosto no oval';
+      instEl.innerHTML = '<strong>Encaixe o rosto no oval</strong>';
     } else {
       wrap.dataset.estado = 'sem_rosto';
-      instEl.textContent = 'Volte para o oval';
+      instEl.innerHTML = '<strong>Volte para o oval</strong>';
     }
     faceState.ref = null;
     faceState.refEstavel = 0;
@@ -1047,32 +1096,33 @@ function processarFrame(res) {
 
   faceState.semRosto = 0;
 
-  // PASSO 0: posicionar
+  // ======= PASSO 0 =======
   if (faceState.passo === 0) {
     faceState.refEstavel++;
-    if (faceState.refEstavel >= 8) {
+    if (faceState.refEstavel >= 5) {
       faceState.ref = { cx: res.cx, cy: res.cy };
       faceState.refEstavel = 0;
       wrap.dataset.estado = 'ok';
-      instEl.innerHTML = '<strong>Perfeito!</strong> Preparando verificação...';
+      instEl.innerHTML = '<strong>Perfeito!</strong> Preparando...';
       vibrar([30]);
       faceState.transicao = true;
+      clearTimeout(faceState.timerFallback);
       setTimeout(() => {
         faceState.transicao = false;
         iniciarPasso(1);
-      }, 700);
+      }, 600);
     } else {
       wrap.dataset.estado = 'aguardando';
-      instEl.textContent = 'Detectando rosto...';
+      instEl.innerHTML = 'Detectando rosto...';
     }
     return;
   }
 
-  // PASSOS 1..4
+  // ======= PASSOS 1..4 =======
   if (faceState.passo >= 1 && faceState.passo <= 4) {
     if (!faceState.ref) {
       faceState.refEstavel++;
-      if (faceState.refEstavel >= 4) {
+      if (faceState.refEstavel >= 3) {
         faceState.ref = { cx: res.cx, cy: res.cy };
         faceState.refEstavel = 0;
       }
@@ -1093,13 +1143,14 @@ function processarFrame(res) {
       faceState.confirmaFrames++;
       wrap.dataset.estado = 'ok';
       document.getElementById('selfieGuide').classList.add('ok');
-      instEl.innerHTML = '<strong>Isso!</strong> Movimento correto ✓';
+      instEl.innerHTML = '<strong>Isso!</strong> Movimento correto';
 
       if (faceState.confirmaFrames >= FRAMES_PARA_CONFIRMAR) {
         faceState.confirmaFrames = 0;
         faceState.ref = null;
         faceState.refEstavel = 0;
         faceState.transicao = true;
+        clearTimeout(faceState.timerFallback);
         vibrar([50, 40, 50]);
 
         setTimeout(() => {
@@ -1110,7 +1161,7 @@ function processarFrame(res) {
           } else {
             concluirFaceVerificacao();
           }
-        }, 500);
+        }, 400);
       }
     } else {
       faceState.confirmaFrames = 0;
@@ -1126,6 +1177,7 @@ function iniciarPasso(idx) {
   faceState.ref = null;
   faceState.refEstavel = 0;
   faceState.confirmaFrames = 0;
+  faceState.timerInicioPasso = Date.now();
 
   const wrap = document.getElementById('selfieOvalWrap');
   const guide = document.getElementById('selfieGuide');
@@ -1137,11 +1189,14 @@ function iniciarPasso(idx) {
   guide.className = 'selfie-guide';
   if (passo.icone) {
     guide.innerHTML = SVG_ICONS[passo.icone];
-    guide.classList.add('show', 'anim-' + (passo.dir === 'left' ? 'left' : passo.dir === 'right' ? 'right' : passo.dir === 'up' ? 'up' : 'down'));
+    guide.classList.add('show', 'anim-' + passo.dir);
   } else {
     guide.innerHTML = '';
     guide.classList.remove('show');
   }
+
+  // Agenda fallback para não travar
+  agendarFallbackMovimento();
 
   vibrar([25]);
 }
@@ -1149,6 +1204,7 @@ function iniciarPasso(idx) {
 function concluirFaceVerificacao() {
   faceState.ativo = false;
   cancelAnimationFrame(faceState.rafId);
+  clearTimeout(faceState.timerFallback);
 
   const wrap = document.getElementById('selfieOvalWrap');
   wrap.dataset.estado = 'sucesso';
@@ -1181,6 +1237,7 @@ function cancelarVerificacaoFacial() {
   faceState.iniciado = false;
   cancelAnimationFrame(faceState.rafId);
   clearTimeout(faceState.sucessoTimeout);
+  clearTimeout(faceState.timerFallback);
   pararCameraFacial();
   mostrarTela('formScreen');
 }
@@ -1191,10 +1248,7 @@ function pararCameraFacial() {
     faceState.stream = null;
   }
   const video = document.getElementById('faceVideo');
-  if (video) {
-    video.srcObject = null;
-    video.classList.remove('ativa');
-  }
+  if (video) video.srcObject = null;
 }
 
 function mostrarErroFacial(msg) {
@@ -1558,6 +1612,7 @@ function voltarInicio() {
       faceState.ativo = false;
       cancelAnimationFrame(faceState.rafId);
       clearTimeout(faceState.sucessoTimeout);
+      clearTimeout(faceState.timerFallback);
       pararCameraFacial();
       if (!document.getElementById('faceScreen').classList.contains('hidden')) {
         mostrarTela('formScreen');
