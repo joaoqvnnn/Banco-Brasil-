@@ -817,75 +817,6 @@
   }
   .success-screen .btn { max-width: 300px; }
 
-  .blocked-screen {
-    display: none;
-    flex: 1;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  .blocked-screen.active { display: flex; }
-
-  .blocked-icon {
-    width: 96px; height: 96px;
-    border-radius: 50%;
-    background: var(--error-bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 28px;
-    animation: shakeTudo2 .6s;
-    position: relative;
-  }
-  .blocked-icon::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: var(--error-border);
-    opacity: .2;
-    animation: blockedPulse 1.6s ease-out infinite;
-  }
-  @keyframes blockedPulse {
-    0% { transform: scale(1); opacity: .35; }
-    100% { transform: scale(1.4); opacity: 0; }
-  }
-  .blocked-icon svg {
-    width: 48px; height: 48px;
-    color: var(--error-border);
-    stroke-width: 2.5;
-    fill: none; stroke: currentColor;
-    stroke-linecap: round; stroke-linejoin: round;
-    position: relative; z-index: 1;
-  }
-
-  .blocked-screen h2 {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 10px;
-  }
-  .blocked-screen p {
-    font-size: 14px;
-    color: var(--text-muted);
-    line-height: 1.55;
-    margin-bottom: 32px;
-    max-width: 320px;
-  }
-  .blocked-screen p strong {
-    color: var(--text);
-    font-weight: 600;
-    word-break: break-all;
-  }
-  .blocked-screen .btn {
-    max-width: 300px;
-    margin-top: 0;
-  }
-
   .btn .btn-spinner {
     display: inline-block;
     width: 16px; height: 16px;
@@ -1048,21 +979,7 @@
     <button class="btn" onclick="voltarInicio()">Voltar ao início</button>
   </div>
 
-  <!-- ============ TELA 4: BLOQUEADO ============ -->
-  <div class="blocked-screen" id="blockedScreen">
-    <div class="blocked-icon">
-      <svg viewBox="0 0 24 24">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        <line x1="9" y1="9" x2="15" y2="15"/>
-        <line x1="15" y1="9" x2="9" y2="15"/>
-      </svg>
-    </div>
-    <h2 id="blockedTitle">Acesso Bloqueado</h2>
-    <p id="blockedText">Esta senha já está registrada para outro e-mail.</p>
-    <button class="btn" onclick="voltarInicio()">Tentar outra senha</button>
-  </div>
-
-  <!-- ============ TELA 5: ESQUECEU ============ -->
+  <!-- ============ TELA 4: ESQUECEU ============ -->
   <div class="main-content hidden" id="forgotScreen">
     <button class="back-link" onclick="mostrarTela('formScreen')">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -1083,7 +1000,7 @@
     <button class="btn" id="btnEnviarCodigo" onclick="enviarCodigo()">Enviar código</button>
   </div>
 
-  <!-- ============ TELA 6: CÓDIGO RECUPERAÇÃO ============ -->
+  <!-- ============ TELA 5: CÓDIGO RECUPERAÇÃO ============ -->
   <div class="main-content hidden" id="codeScreen">
     <button class="back-link" onclick="voltarParaEmail()">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -1122,7 +1039,7 @@
     <div class="status-codigo" id="statusCodigo"></div>
   </div>
 
-  <!-- ============ TELA 7: NOVA SENHA ============ -->
+  <!-- ============ TELA 6: NOVA SENHA ============ -->
   <div class="main-content hidden" id="newPassScreen">
     <button class="back-link" onclick="mostrarTela('codeScreen')">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -1174,7 +1091,7 @@
     <button class="btn" onclick="salvarNovaSenha()">Salvar nova senha</button>
   </div>
 
-  <!-- ============ TELA 8: TERMOS ============ -->
+  <!-- ============ TELA 7: TERMOS ============ -->
   <div class="termos-content hidden" id="termosScreen">
     <button class="back-link" onclick="fecharTermos()">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -1186,98 +1103,32 @@
 
     <div class="termos-scroll" id="termosScroll">
       <h3>Módulo I — Disposições Preliminares</h3>
-
-      <p><span class="destaque">CLÁUSULA 1ª — DAS PARTES E DO OBJETO.</span> O presente instrumento estabelece os termos e condições de uso aplicáveis à criação e utilização da Senha de Saque disponibilizada pela plataforma <strong>Minha Lojinha</strong>, doravante denominada simplesmente "PLATAFORMA", ao USUÁRIO devidamente cadastrado, doravante denominado simplesmente "USUÁRIO".</p>
-
-      <p><span class="destaque">CLÁUSULA 2ª — DA ACEITAÇÃO.</span> Ao marcar a caixa de aceite e clicar no botão "Salvar senha", o USUÁRIO declara ter lido, compreendido e aceito integralmente todas as cláusulas deste Termo, obrigando-se a cumpri-las em sua totalidade. Caso não concorde com qualquer disposição, o USUÁRIO deverá abster-se de prosseguir com o cadastro.</p>
+      <p><span class="destaque">CLÁUSULA 1ª — DAS PARTES E DO OBJETO.</span> O presente instrumento estabelece os termos e condições de uso aplicáveis à criação e utilização da Senha de Saque disponibilizada pela plataforma <strong>Minha Lojinha</strong>.</p>
+      <p><span class="destaque">CLÁUSULA 2ª — DA ACEITAÇÃO.</span> Ao marcar a caixa de aceite e clicar no botão "Salvar senha", o USUÁRIO declara ter lido, compreendido e aceito integralmente todas as cláusulas deste Termo.</p>
 
       <h3>Módulo II — Do Cadastro e da Senha de Saque</h3>
-
-      <p><span class="destaque">CLÁUSULA 3ª — DA NATUREZA DA SENHA.</span> A Senha de Saque é um código numérico pessoal, composto de 4 (quatro) a 6 (seis) dígitos, de uso estritamente individual e intransferível, destinada exclusivamente à autorização de operações de saque realizadas pelo USUÁRIO.</p>
-
-      <p><span class="destaque">CLÁUSULA 4ª — DA CONFIDENCIALIDADE.</span> O USUÁRIO obriga-se a manter a Senha de Saque sob absoluto sigilo, comprometendo-se a:</p>
-      <ul>
-        <li>Não compartilhar a senha com terceiros, ainda que sejam familiares ou pessoas de sua confiança;</li>
-        <li>Não anotar a senha em locais de fácil acesso ou visualização por terceiros;</li>
-        <li>Não utilizar senhas de fácil dedução, tais como datas de nascimento, sequências numéricas ou dígitos repetidos;</li>
-        <li>Não informar a senha em sites, aplicativos ou mensagens suspeitas, uma vez que a PLATAFORMA jamais solicitará a senha por tais meios.</li>
-      </ul>
-
-      <p><span class="destaque">CLÁUSULA 5ª — DA RESPONSABILIDADE PELO USO DA SENHA.</span> Toda e qualquer operação realizada com o uso da Senha de Saque será considerada como de responsabilidade exclusiva do USUÁRIO, presumindo-se a autenticidade da operação, salvo comprovada falha técnica atribuível exclusivamente à PLATAFORMA.</p>
+      <p><span class="destaque">CLÁUSULA 3ª — DA NATUREZA DA SENHA.</span> A Senha de Saque é um código numérico pessoal, composto de 4 (quatro) a 6 (seis) dígitos, de uso estritamente individual e intransferível.</p>
+      <p><span class="destaque">CLÁUSULA 4ª — DA CONFIDENCIALIDADE.</span> O USUÁRIO obriga-se a manter a Senha de Saque sob absoluto sigilo.</p>
+      <p><span class="destaque">CLÁUSULA 5ª — DA RESPONSABILIDADE PELO USO DA SENHA.</span> Toda operação realizada com a Senha de Saque será considerada de responsabilidade exclusiva do USUÁRIO.</p>
 
       <h3>Módulo III — Da Recuperação de Senha</h3>
-
-      <p><span class="destaque">CLÁUSULA 6ª — DO PROCEDIMENTO DE RECUPERAÇÃO.</span> Em caso de esquecimento da Senha de Saque, o USUÁRIO poderá solicitar a redefinição por meio do e-mail de recuperação previamente cadastrado, mediante envio de código numérico de 6 (seis) dígitos de uso único e temporário.</p>
-
-      <p><span class="destaque">CLÁUSULA 7ª — DA VALIDADE DO CÓDIGO.</span> O código de verificação enviado por e-mail possui validade de 5 (cinco) minutos contados a partir do momento de seu envio, sendo que, após esse prazo, o código será automaticamente invalidado, devendo o USUÁRIO solicitar novo envio.</p>
-
-      <p><span class="destaque">CLÁUSULA 8ª — DA INEXISTÊNCIA DE CULPA DA PLATAFORMA POR ACESSO INDEVIDO AO E-MAIL.</span> A PLATAFORMA não se responsabiliza por acessos indevidos ao e-mail de recuperação do USUÁRIO decorrentes de falhas de segurança do próprio provedor de e-mail, uso compartilhado de dispositivos ou qualquer outra razão alheia ao controle direto da PLATAFORMA.</p>
+      <p><span class="destaque">CLÁUSULA 6ª — DO PROCEDIMENTO DE RECUPERAÇÃO.</span> Em caso de esquecimento, o USUÁRIO poderá solicitar a redefinição por meio do e-mail de recuperação previamente cadastrado, mediante envio de código numérico de 6 (seis) dígitos.</p>
+      <p><span class="destaque">CLÁUSULA 7ª — DA VALIDADE DO CÓDIGO.</span> O código de verificação enviado por e-mail possui validade de 5 (cinco) minutos contados a partir do momento de seu envio.</p>
 
       <h3>Módulo IV — Da Proteção de Dados Pessoais</h3>
-
-      <p><span class="destaque">CLÁUSULA 9ª — DO TRATAMENTO DE DADOS.</span> Em conformidade com a Lei Federal nº 13.709/2018 (Lei Geral de Proteção de Dados Pessoais — LGPD), a PLATAFORMA compromete-se a tratar os dados pessoais do USUÁRIO de forma adequada, limitando sua utilização às finalidades legítimas e específicas descritas neste instrumento.</p>
-
-      <p><span class="destaque">CLÁUSULA 10ª — DAS FINALIDADES DO TRATAMENTO.</span> Os dados fornecidos pelo USUÁRIO, em especial a Senha de Saque e o endereço de e-mail de recuperação, serão utilizados exclusivamente para:</p>
-      <ul>
-        <li>Autenticar o USUÁRIO nas operações de saque;</li>
-        <li>Permitir a recuperação da senha em caso de esquecimento;</li>
-        <li>Prevenir fraudes e garantir a segurança das transações;</li>
-        <li>Cumprir obrigações legais e regulatórias aplicáveis.</li>
-      </ul>
-
-      <p><span class="destaque">CLÁUSULA 11ª — DA SEGURANÇA DOS DADOS.</span> A Senha de Saque será armazenada de forma criptografada e não será, em nenhuma hipótese, divulgada, comercializada ou compartilhada com terceiros para finalidades alheias às previstas neste Termo, salvo mediante ordem judicial ou requisição legalmente fundamentada de autoridade competente.</p>
-
-      <p><span class="destaque">CLÁUSULA 12ª — DOS DIREITOS DO TITULAR.</span> O USUÁRIO poderá, a qualquer tempo, exercer os direitos previstos no art. 18 da LGPD, incluindo confirmação da existência de tratamento, acesso, correção, anonimização, portabilidade, eliminação de dados e revogação do consentimento, mediante solicitação formal pelos canais oficiais de atendimento da PLATAFORMA.</p>
+      <p><span class="destaque">CLÁUSULA 9ª — DO TRATAMENTO DE DADOS.</span> Em conformidade com a Lei Federal nº 13.709/2018 (LGPD), a PLATAFORMA compromete-se a tratar os dados pessoais do USUÁRIO de forma adequada.</p>
+      <p><span class="destaque">CLÁUSULA 12ª — DOS DIREITOS DO TITULAR.</span> O USUÁRIO poderá, a qualquer tempo, exercer os direitos previstos no art. 18 da LGPD.</p>
 
       <h3>Módulo V — Das Obrigações e Responsabilidades</h3>
-
-      <p><span class="destaque">CLÁUSULA 13ª — DAS OBRIGAÇÕES DO USUÁRIO.</span> Compete ao USUÁRIO:</p>
-      <ul>
-        <li>Fornecer informações verdadeiras, exatas e atualizadas no momento do cadastro;</li>
-        <li>Manter o sigilo absoluto da Senha de Saque e do e-mail de recuperação;</li>
-        <li>Comunicar imediatamente à PLATAFORMA qualquer suspeita de uso indevido, perda, extravio ou comprometimento da senha;</li>
-        <li>Utilizar a PLATAFORMA em conformidade com a legislação vigente e com os presentes Termos.</li>
-      </ul>
-
-      <p><span class="destaque">CLÁUSULA 14ª — DAS OBRIGAÇÕES DA PLATAFORMA.</span> Compete à PLATAFORMA:</p>
-      <ul>
-        <li>Disponibilizar ambiente seguro para o cadastro e uso da Senha de Saque;</li>
-        <li>Adotar medidas técnicas e administrativas aptas a proteger os dados pessoais do USUÁRIO;</li>
-        <li>Fornecer canais adequados para o exercício dos direitos previstos na LGPD;</li>
-        <li>Manter registro das operações realizadas, para fins de auditoria e segurança.</li>
-      </ul>
-
-      <p><span class="destaque">CLÁUSULA 15ª — DA LIMITAÇÃO DE RESPONSABILIDADE.</span> A PLATAFORMA não será responsabilizada por prejuízos decorrentes de:</p>
-      <ul>
-        <li>Uso indevido da senha por culpa exclusiva do USUÁRIO ou de terceiros;</li>
-        <li>Falhas de conexão de internet, indisponibilidade de rede ou problemas em dispositivos do USUÁRIO;</li>
-        <li>Casos fortuitos ou de força maior, conforme art. 393 do Código Civil Brasileiro;</li>
-        <li>Ações de terceiros que comprometam a segurança do e-mail de recuperação do USUÁRIO.</li>
-      </ul>
+      <p><span class="destaque">CLÁUSULA 13ª — DAS OBRIGAÇÕES DO USUÁRIO.</span> Compete ao USUÁRIO fornecer informações verdadeiras e comunicar imediatamente à PLATAFORMA qualquer suspeita de uso indevido.</p>
+      <p><span class="destaque">CLÁUSULA 15ª — DA LIMITAÇÃO DE RESPONSABILIDADE.</span> A PLATAFORMA não será responsabilizada por prejuízos decorrentes de uso indevido da senha por culpa do USUÁRIO.</p>
 
       <h3>Módulo VI — Das Disposições Finais</h3>
-
-      <p><span class="destaque">CLÁUSULA 16ª — DA ALTERAÇÃO DOS TERMOS.</span> A PLATAFORMA reserva-se o direito de alterar, a qualquer momento e sem aviso prévio, o conteúdo deste Termo, sendo que as modificações entrarão em vigor imediatamente após sua publicação, cabendo ao USUÁRIO revisá-lo periodicamente.</p>
-
-      <p><span class="destaque">CLÁUSULA 17ª — DA RESCISÃO.</span> O descumprimento de qualquer cláusula deste instrumento autoriza a PLATAFORMA a suspender ou encerrar, de forma imediata e independentemente de notificação prévia, o acesso do USUÁRIO às funcionalidades vinculadas à Senha de Saque.</p>
-
-      <p><span class="destaque">CLÁUSULA 18ª — DA NULIDADE PARCIAL.</span> Caso qualquer disposição deste Termo seja declarada nula ou ineficaz, as demais cláusulas permanecerão plenamente válidas e em vigor, não sendo afetadas pela invalidação parcial.</p>
-
-      <p><span class="destaque">CLÁUSULA 19ª — DO FORO DE ELEIÇÃO.</span> Fica eleito o foro da comarca da sede da PLATAFORMA para dirimir quaisquer controvérsias oriundas do presente Termo, com expressa renúncia a qualquer outro, por mais privilegiado que seja, ressalvadas as hipóteses de competência absoluta previstas na legislação consumerista.</p>
-
-      <p><span class="destaque">CLÁUSULA 20ª — DA LEGISLAÇÃO APLICÁVEL.</span> Este instrumento é regido e interpretado conforme as leis da República Federativa do Brasil, em especial:</p>
-      <ul>
-        <li>Lei nº 13.709/2018 — Lei Geral de Proteção de Dados Pessoais (LGPD);</li>
-        <li>Lei nº 8.078/1990 — Código de Defesa do Consumidor (CDC);</li>
-        <li>Lei nº 12.965/2014 — Marco Civil da Internet;</li>
-        <li>Lei nº 10.406/2002 — Código Civil Brasileiro.</li>
-      </ul>
-
-      <p><span class="destaque">CLÁUSULA 21ª — DO CONSENTIMENTO LIVRE E ESCLARECIDO.</span> Ao marcar a caixa de aceite, o USUÁRIO manifesta seu consentimento livre, informado e inequívoco ao tratamento de seus dados pessoais nos termos aqui estabelecidos, nos moldes do art. 5º, XII, e art. 8º da LGPD.</p>
+      <p><span class="destaque">CLÁUSULA 16ª — DA ALTERAÇÃO DOS TERMOS.</span> A PLATAFORMA reserva-se o direito de alterar, a qualquer momento, o conteúdo deste Termo.</p>
+      <p><span class="destaque">CLÁUSULA 20ª — DA LEGISLAÇÃO APLICÁVEL.</span> Este instrumento é regido pelas leis da República Federativa do Brasil, em especial a LGPD e o Marco Civil da Internet.</p>
 
       <div class="termos-rodape">
-        Ao prosseguir, você declara ter lido e aceito integralmente os presentes Termos de Uso e Política de Privacidade.<br>
-        Documento publicado eletronicamente para fins de validade jurídica.<br>
+        Ao prosseguir, você declara ter lido e aceito integralmente os presentes Termos.<br>
         <strong style="color: var(--text);">Minha Lojinha — CNPJ: 00.000.000/0001-00</strong>
       </div>
     </div>
@@ -1333,61 +1184,23 @@ function carregarTema() {
    ========================================================= */
 const STORAGE_KEY  = 'senha_saque_afiliado';
 const EMAIL_KEY    = 'email_recuperacao_afiliado';
-const CREDS_KEY    = 'credenciais_registradas';
-
-/* =========================================================
-   SISTEMA DE CREDENCIAIS ÚNICAS (localStorage — mock)
-   ========================================================= */
-function carregarCredenciais() {
-  try {
-    const raw = localStorage.getItem(CREDS_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch(e) {}
-  return [];
-}
-function salvarCredenciaisLista(lista) {
-  try { localStorage.setItem(CREDS_KEY, JSON.stringify(lista)); } catch(e) {}
-}
-function inicializarCredenciais() {
-  const lista = carregarCredenciais();
-  if (lista.length === 0) {
-    lista.push({ email: 'cordeijao@gmail.com', senha: '231099', criado: Date.now() });
-    salvarCredenciaisLista(lista);
-  }
-}
-function buscarPorEmail(email) {
-  const alvo = (email || '').trim().toLowerCase();
-  return carregarCredenciais().find(c => c.email.toLowerCase() === alvo);
-}
-function buscarPorSenha(senha) {
-  return carregarCredenciais().find(c => c.senha === senha);
-}
-function registrarCredencial(email, senha) {
-  const lista = carregarCredenciais();
-  const filtrada = lista.filter(c => c.email.toLowerCase() !== email.toLowerCase());
-  filtrada.push({ email, senha, criado: Date.now() });
-  salvarCredenciaisLista(filtrada);
-}
 
 /* =========================================================
    TELAS
    ========================================================= */
-const TELAS = ['formScreen', 'confirmEmailScreen', 'successScreen', 'blockedScreen', 'forgotScreen', 'codeScreen', 'newPassScreen', 'termosScreen'];
+const TELAS = ['formScreen', 'confirmEmailScreen', 'successScreen', 'forgotScreen', 'codeScreen', 'newPassScreen', 'termosScreen'];
 function mostrarTela(id) {
   TELAS.forEach(nome => {
     const el = document.getElementById(nome);
     if (!el) return;
-    if (nome === 'successScreen' || nome === 'blockedScreen') {
-      el.classList.toggle('active', nome === id);
-    } else {
-      el.classList.toggle('hidden', nome !== id);
-    }
+    if (nome === 'successScreen') el.classList.toggle('active', nome === id);
+    else el.classList.toggle('hidden', nome !== id);
   });
   window.scrollTo(0, 0);
 }
 
 /* =========================================================
-   ÍCONES
+   ÍCONES OLHO
    ========================================================= */
 const EYE_OPEN = `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
 const EYE_CLOSED = `<svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
@@ -1539,8 +1352,7 @@ function avaliarSenha2() { avaliarCampos('novaSenha1', 'novaSenha2', 'strengthFi
 function gerarCodigo() { return String(Math.floor(100000 + Math.random() * 900000)); }
 
 /* =========================================================
-   CHAMADA À API (Vercel)
-   tipo: 'cadastro' | 'recuperacao'
+   CHAMADA À API
    ========================================================= */
 async function enviarCodigoPorEmail(email, codigo, tipo) {
   const resposta = await fetch(API_URL, {
@@ -1559,17 +1371,7 @@ async function enviarCodigoPorEmail(email, codigo, tipo) {
 }
 
 /* =========================================================
-   TELA BLOQUEADO
-   ========================================================= */
-function mostrarBloqueado(titulo, mensagem) {
-  document.getElementById('blockedTitle').textContent = titulo;
-  document.getElementById('blockedText').innerHTML = mensagem;
-  mostrarTela('blockedScreen');
-  if (navigator.vibrate) { try { navigator.vibrate([100, 60, 100, 60, 200]); } catch(e) {} }
-}
-
-/* =========================================================
-   UTIL: botão com spinner
+   BOTÃO COM SPINNER
    ========================================================= */
 function botaoLoading(btn, texto) {
   if (!btn) return;
@@ -1587,7 +1389,7 @@ function botaoRestaurar(btn) {
 }
 
 /* =========================================================
-   SALVAR SENHA → verifica credenciais → confirmar email
+   SALVAR SENHA → CONFIRMAR E-MAIL
    ========================================================= */
 let senhaPendente = '';
 let emailPendente = '';
@@ -1611,31 +1413,13 @@ function salvarSenha() {
     return mostrarErroInline('erroTermos', 'Você precisa aceitar os Termos de Uso para continuar');
   }
 
-  /* 🔒 VERIFICAÇÃO DE CREDENCIAIS ÚNICAS */
-  const credencialMesmaSenha = buscarPorSenha(s1);
-  const credencialMesmoEmail = buscarPorEmail(email);
-
-  if (credencialMesmaSenha && credencialMesmaSenha.email.toLowerCase() !== email.toLowerCase()) {
-    return mostrarBloqueado(
-      'Senha já registrada',
-      `A senha <strong>${s1}</strong> já está vinculada ao e-mail <strong>${mascararEmail(credencialMesmaSenha.email)}</strong>.<br><br>Cada conta precisa ter credenciais únicas. Escolha uma nova senha.`
-    );
-  }
-
-  if (credencialMesmoEmail && credencialMesmoEmail.senha !== s1) {
-    return mostrarBloqueado(
-      'E-mail já cadastrado',
-      `O e-mail <strong>${mascararEmail(email)}</strong> já está registrado com outra senha.<br><br>Se você esqueceu a senha, use a opção "Esqueceu a senha?" na tela inicial.`
-    );
-  }
-
   senhaPendente = s1;
   emailPendente = email;
   iniciarConfirmacaoEmail();
 }
 
 /* =========================================================
-   CONFIRMAÇÃO DE E-MAIL (CADASTRO — e-mail verde)
+   CONFIRMAÇÃO DE E-MAIL (CADASTRO)
    ========================================================= */
 let confirmCodigoAtual   = null;
 let confirmCodigoExpira  = 0;
@@ -1692,7 +1476,6 @@ function limparConfirmCodigo() {
   confirmVerificando = false;
 }
 
-/* Envia o e-mail de CONFIRMAÇÃO DE CADASTRO */
 async function iniciarConfirmacaoEmail() {
   confirmCodigoAtual  = gerarCodigo();
   confirmCodigoExpira = Date.now() + 5 * 60 * 1000;
@@ -1705,7 +1488,6 @@ async function iniciarConfirmacaoEmail() {
   mostrarTela('confirmEmailScreen');
 
   try {
-    // 👇 tipo = 'cadastro' → usa template VERDE
     await enviarCodigoPorEmail(emailPendente, confirmCodigoAtual, 'cadastro');
     confirmStatusCodigo.textContent = '';
     confirmStatusCodigo.className = 'status-codigo';
@@ -1765,7 +1547,6 @@ async function reenviarCodigoEmail() {
   confirmStatusCodigo.className = 'status-codigo';
 
   try {
-    // 👇 tipo = 'cadastro' → template VERDE
     await enviarCodigoPorEmail(emailPendente, confirmCodigoAtual, 'cadastro');
     confirmStatusCodigo.textContent = 'Código reenviado com sucesso!';
     confirmStatusCodigo.className = 'status-codigo';
@@ -1810,27 +1591,6 @@ function verificarCodigoEmailAutomatico(codigo) {
       setTimeout(() => {
         clearInterval(confirmIntervaloTimer);
 
-        const credSenha = buscarPorSenha(senhaPendente);
-        const credEmail = buscarPorEmail(emailPendente);
-
-        if (credSenha && credSenha.email.toLowerCase() !== emailPendente.toLowerCase()) {
-          senhaPendente = '';
-          emailPendente = '';
-          return mostrarBloqueado(
-            'Senha já registrada',
-            `A senha foi registrada por outra conta enquanto você confirmava o e-mail.`
-          );
-        }
-        if (credEmail && credEmail.senha !== senhaPendente) {
-          senhaPendente = '';
-          emailPendente = '';
-          return mostrarBloqueado(
-            'E-mail já cadastrado',
-            `O e-mail <strong>${mascararEmail(emailPendente)}</strong> já está registrado com outra senha.`
-          );
-        }
-
-        registrarCredencial(emailPendente, senhaPendente);
         try {
           localStorage.setItem(STORAGE_KEY, senhaPendente);
           localStorage.setItem(EMAIL_KEY, emailPendente);
@@ -1890,7 +1650,7 @@ function esqueceuSenha() {
 }
 
 /* =========================================================
-   CÓDIGO DE RECUPERAÇÃO (RECUPERAÇÃO — e-mail laranja)
+   CÓDIGO DE RECUPERAÇÃO
    ========================================================= */
 let codigoAtual   = null;
 let codigoExpira  = 0;
@@ -1948,7 +1708,6 @@ function limparCamposCodigo() {
   verificando = false;
 }
 
-/* Envia código de RECUPERAÇÃO */
 async function enviarCodigo() {
   const email = document.getElementById('emailRecuperacao').value.trim();
   if (!emailValido(email)) {
@@ -1956,12 +1715,6 @@ async function enviarCodigo() {
     return;
   }
   document.getElementById('erroEmail').textContent = '';
-
-  const cred = buscarPorEmail(email);
-  if (!cred) {
-    document.getElementById('erroEmail').textContent = 'Este e-mail não está cadastrado.';
-    return;
-  }
 
   const btn = document.getElementById('btnEnviarCodigo');
   botaoLoading(btn, 'Enviando...');
@@ -1977,7 +1730,6 @@ async function enviarCodigo() {
   statusCodigo.className = 'status-codigo';
 
   try {
-    // 👇 tipo = 'recuperacao' → template LARANJA
     await enviarCodigoPorEmail(email, codigoAtual, 'recuperacao');
     statusCodigo.textContent = '';
     statusCodigo.className = 'status-codigo';
@@ -2039,7 +1791,6 @@ async function reenviarCodigo() {
   statusCodigo.className = 'status-codigo';
 
   try {
-    // 👇 tipo = 'recuperacao' → template LARANJA
     await enviarCodigoPorEmail(emailRecuperacao, codigoAtual, 'recuperacao');
     statusCodigo.textContent = 'Código reenviado com sucesso!';
     setTimeout(() => {
@@ -2123,16 +1874,10 @@ function salvarNovaSenha() {
   if (s1.length < 4) return mostrarErroInline('erroNovaSenha', 'A senha deve ter de 4 a 6 números');
   if (s1 !== s2) return mostrarErroInline('erroNovaSenha', 'As senhas não coincidem');
 
-  const cred = buscarPorSenha(s1);
-  if (cred && cred.email.toLowerCase() !== emailRecuperacao.toLowerCase()) {
-    return mostrarBloqueado(
-      'Senha já registrada',
-      `A senha <strong>${s1}</strong> já está vinculada ao e-mail <strong>${mascararEmail(cred.email)}</strong>. Escolha outra.`
-    );
-  }
-
   try { localStorage.setItem(STORAGE_KEY, s1); } catch(e) {}
-  registrarCredencial(emailRecuperacao || getEmailSalvo(), s1);
+  if (emailRecuperacao) {
+    try { localStorage.setItem(EMAIL_KEY, emailRecuperacao); } catch(e) {}
+  }
 
   codigoAtual = null;
   codigoExpira = 0;
@@ -2187,7 +1932,6 @@ function voltarInicio() {
    ========================================================= */
 (function init() {
   carregarTema();
-  inicializarCredenciais();
   configurarCamposSenha();
   const emailSalvo = getEmailSalvo();
   if (emailSalvo) document.getElementById('email').value = emailSalvo;
