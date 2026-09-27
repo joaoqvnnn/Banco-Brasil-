@@ -261,6 +261,60 @@
   .input-wrapper input.input-normal:focus { border-color: var(--border-focus); }
   .input-wrapper input.input-normal::placeholder { color: var(--text-placeholder); }
 
+  /* ============================================================
+     SUGESTÕES DE E-MAIL (dropdown vertical)
+     ============================================================ */
+  .email-suggestions {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    z-index: 100;
+    max-height: 220px;
+    overflow-y: auto;
+    display: none;
+    animation: fadeUp .15s ease;
+  }
+  html[data-tema="escuro"] .email-suggestions {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .email-suggestions.show { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .email-suggestion-item {
+    padding: 12px 16px;
+    font-size: 15px;
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background .15s;
+    border-bottom: 1px solid var(--border);
+  }
+  .email-suggestion-item:last-child { border-bottom: none; }
+  .email-suggestion-item:hover,
+  .email-suggestion-item:active {
+    background: rgba(127,127,127,.08);
+  }
+  .email-suggestion-item svg {
+    width: 16px; height: 16px;
+    stroke: var(--text-muted); fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+  .email-suggestion-item .dominio {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-left: auto;
+  }
+
   .senha-real {
     position: absolute;
     inset: 0;
@@ -301,16 +355,18 @@
 
   .senha-texto {
     font-weight: 700;
-    font-size: 20px;
+    font-size: 22px;
     line-height: 1;
     color: var(--text);
-    letter-spacing: 8px;
-    margin-right: -8px;
+    letter-spacing: 4px;
+    margin-right: -4px;
+    padding-bottom: 4px;
   }
   .senha-texto.revelada {
     letter-spacing: 3px;
     font-size: 17px;
     margin-right: 0;
+    padding-bottom: 0;
   }
 
   .toggle-eye {
@@ -350,19 +406,22 @@
     min-height: 16px;
   }
 
-  .strength-bar {
-    height: 4px;
-    background: var(--strength-bar-bg);
-    border-radius: 2px;
+  .strength-segments {
+    display: flex;
+    gap: 6px;
     margin-top: 10px;
-    overflow: hidden;
   }
-  .strength-fill {
-    height: 100%;
-    width: 0%;
-    transition: all .3s;
+  .strength-segment {
+    flex: 1;
+    height: 4px;
     border-radius: 2px;
+    background: var(--strength-bar-bg);
+    transition: background .3s;
   }
+  .strength-segment.on-vermelho { background: #dc2626; }
+  .strength-segment.on-laranja  { background: #f97316; }
+  .strength-segment.on-verde    { background: #16a34a; }
+
   .strength-text {
     font-size: 12px;
     margin-top: 6px;
@@ -392,10 +451,7 @@
     transition: border-color .25s, background .3s;
     cursor: pointer;
   }
-  .termos-box.marcado {
-    border-color: var(--success-border);
-    background: var(--success-bg);
-  }
+  .termos-box.marcado { border-color: var(--text); }
   .termos-box.erro {
     border-color: var(--error-border);
     animation: shakeTudo2 .4s;
@@ -431,8 +487,8 @@
     transition: opacity .2s, transform .2s;
   }
   .termos-box.marcado .checkbox-custom {
-    background: var(--success-border);
-    border-color: var(--success-border);
+    background: var(--text);
+    border-color: var(--text);
   }
   .termos-box.marcado .checkbox-custom svg {
     opacity: 1;
@@ -876,7 +932,11 @@
           </svg>
         </button>
       </div>
-      <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+      <div class="strength-segments" id="segments1">
+        <div class="strength-segment"></div>
+        <div class="strength-segment"></div>
+        <div class="strength-segment"></div>
+      </div>
       <div class="strength-text" id="strengthText"></div>
       <div class="hint">Apenas números (4 a 6 dígitos).</div>
       <div class="erro-texto" id="erroSenha"></div>
@@ -903,7 +963,8 @@
     <div class="field">
       <label>E-mail para recuperação</label>
       <div class="input-wrapper">
-        <input type="email" id="email" class="input-normal" placeholder="seu@email.com" autocomplete="email" oninput="document.getElementById('erroEmailForm').textContent=''">
+        <input type="email" id="email" class="input-normal" placeholder="seu@email.com" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="onEmailInput()" onfocus="onEmailFocus()" onblur="onEmailBlur()">
+        <div class="email-suggestions" id="emailSuggestions"></div>
       </div>
       <div class="hint">Usaremos este e-mail caso você esqueça a senha.</div>
       <div class="erro-texto" id="erroEmailForm"></div>
@@ -992,7 +1053,8 @@
     <div class="field">
       <label>E-mail cadastrado</label>
       <div class="input-wrapper">
-        <input type="email" id="emailRecuperacao" class="input-normal" placeholder="seu@email.com" autocomplete="email" oninput="document.getElementById('erroEmail').textContent=''">
+        <input type="email" id="emailRecuperacao" class="input-normal" placeholder="seu@email.com" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="onEmailRecInput()" onfocus="onEmailRecFocus()" onblur="onEmailRecBlur()">
+        <div class="email-suggestions" id="emailSuggestionsRec"></div>
       </div>
       <div class="erro-texto" id="erroEmail"></div>
     </div>
@@ -1064,7 +1126,11 @@
           </svg>
         </button>
       </div>
-      <div class="strength-bar"><div class="strength-fill" id="strengthFill2"></div></div>
+      <div class="strength-segments" id="segments2">
+        <div class="strength-segment"></div>
+        <div class="strength-segment"></div>
+        <div class="strength-segment"></div>
+      </div>
       <div class="strength-text" id="strengthText2"></div>
       <div class="hint">Apenas números (4 a 6 dígitos).</div>
       <div class="erro-texto" id="erroNovaSenha"></div>
@@ -1186,6 +1252,100 @@ const STORAGE_KEY  = 'senha_saque_afiliado';
 const EMAIL_KEY    = 'email_recuperacao_afiliado';
 
 /* =========================================================
+   DOMÍNIOS DE E-MAIL SUGERIDOS
+   ========================================================= */
+const DOMINIOS_EMAIL = [
+  'gmail.com',
+  'hotmail.com',
+  'outlook.com',
+  'icloud.com',
+  'yahoo.com',
+  'live.com',
+  'bol.com.br',
+  'uol.com.br'
+];
+
+/* =========================================================
+   SUGESTÕES DE E-MAIL (dropdown vertical)
+   ========================================================= */
+const SVG_MAIL = `<svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,6 12,13 22,6"/></svg>`;
+
+function mostrarSugestoes(inputEl, containerEl, valor) {
+  const partes = valor.split('@');
+  const usuario = partes[0].trim();
+
+  if (!usuario) {
+    containerEl.classList.remove('show');
+    containerEl.innerHTML = '';
+    return;
+  }
+
+  if (partes.length > 1 && partes[1].trim().length > 0) {
+    containerEl.classList.remove('show');
+    containerEl.innerHTML = '';
+    return;
+  }
+
+  const sugestoes = DOMINIOS_EMAIL.slice(0, 6);
+
+  containerEl.innerHTML = sugestoes.map(dominio => `
+    <div class="email-suggestion-item" data-email="${usuario}@${dominio}">
+      ${SVG_MAIL}
+      <span>${usuario}@<strong>${dominio}</strong></span>
+    </div>
+  `).join('');
+
+  containerEl.classList.add('show');
+
+  containerEl.querySelectorAll('.email-suggestion-item').forEach(el => {
+    el.addEventListener('mousedown', e => {
+      e.preventDefault();
+      const email = el.dataset.email;
+      inputEl.value = email;
+      containerEl.classList.remove('show');
+      containerEl.innerHTML = '';
+      inputEl.focus();
+    });
+  });
+}
+
+function onEmailInput() {
+  const input = document.getElementById('email');
+  const box = document.getElementById('emailSuggestions');
+  mostrarSugestoes(input, box, input.value);
+}
+function onEmailFocus() {
+  const input = document.getElementById('email');
+  const box = document.getElementById('emailSuggestions');
+  if (input.value.includes('@')) mostrarSugestoes(input, box, input.value);
+}
+function onEmailBlur() {
+  setTimeout(() => {
+    const box = document.getElementById('emailSuggestions');
+    box.classList.remove('show');
+    box.innerHTML = '';
+  }, 150);
+}
+
+function onEmailRecInput() {
+  const input = document.getElementById('emailRecuperacao');
+  const box = document.getElementById('emailSuggestionsRec');
+  mostrarSugestoes(input, box, input.value);
+}
+function onEmailRecFocus() {
+  const input = document.getElementById('emailRecuperacao');
+  const box = document.getElementById('emailSuggestionsRec');
+  if (input.value.includes('@')) mostrarSugestoes(input, box, input.value);
+}
+function onEmailRecBlur() {
+  setTimeout(() => {
+    const box = document.getElementById('emailSuggestionsRec');
+    box.classList.remove('show');
+    box.innerHTML = '';
+  }, 150);
+}
+
+/* =========================================================
    TELAS
    ========================================================= */
 const TELAS = ['formScreen', 'confirmEmailScreen', 'successScreen', 'forgotScreen', 'codeScreen', 'newPassScreen', 'termosScreen'];
@@ -1230,7 +1390,7 @@ function aceitarEVoltar() {
 }
 
 /* =========================================================
-   MÁSCARA DE SENHA
+   MÁSCARA DE SENHA (com PONTO • )
    ========================================================= */
 const senhasReveladas = { senha1: false, senha2: false, novaSenha1: false, novaSenha2: false };
 const CAMPOS_SENHA = ['senha1', 'senha2', 'novaSenha1', 'novaSenha2'];
@@ -1253,7 +1413,7 @@ function atualizarMascara(id) {
       texto.textContent = input.value;
       texto.classList.add('revelada');
     } else {
-      texto.textContent = '*'.repeat(input.value.length);
+      texto.textContent = '•'.repeat(input.value.length);
       texto.classList.remove('revelada');
     }
   }
@@ -1319,32 +1479,46 @@ function mascararEmail(email) {
 
 /* =========================================================
    FORÇA DA SENHA
+   Sempre mostra os indicadores (mesmo com senha completa)
    ========================================================= */
 function calcularForca(senha) {
   const n = senha.length;
-  if (n === 0) return { w: '0%',   c: '#e5e7eb', t: '' };
-  if (n <= 3)  return { w: '33%',  c: '#dc2626', t: 'Fraca' };
-  if (n <= 5)  return { w: '66%',  c: '#f97316', t: 'Média' };
-  return              { w: '100%', c: '#16a34a', t: 'Forte' };
+  if (n === 0) return { nivel: 0, texto: '', cor: '' };
+  if (n <= 3)  return { nivel: 1, texto: 'Fraca', cor: '#dc2626' };
+  if (n <= 5)  return { nivel: 2, texto: 'Média', cor: '#f97316' };
+  return              { nivel: 3, texto: 'Forte', cor: '#16a34a' };
 }
-function avaliarCampos(id1, id2, fillId, txtId, matchId) {
+
+function pintarSegmentos(containerId, nivel) {
+  const segs = document.querySelectorAll('#' + containerId + ' .strength-segment');
+  segs.forEach((s, i) => {
+    s.classList.remove('on-vermelho', 'on-laranja', 'on-verde');
+    if (i === 0 && nivel >= 1) s.classList.add('on-vermelho');
+    if (i === 1 && nivel >= 2) s.classList.add('on-laranja');
+    if (i === 2 && nivel >= 3) s.classList.add('on-verde');
+  });
+}
+
+function avaliarCampos(id1, id2, segmentsId, txtId, matchId) {
   const s1 = document.getElementById(id1).value;
   const s2 = document.getElementById(id2).value;
   const nivel = calcularForca(s1);
-  const fill = document.getElementById(fillId);
-  const txt  = document.getElementById(txtId);
-  fill.style.width = nivel.w;
-  fill.style.background = nivel.c;
-  txt.textContent = nivel.t;
-  txt.style.color = nivel.c;
+
+  // Sempre pinta os segmentos (com senha completa, fica tudo verde)
+  pintarSegmentos(segmentsId, nivel.nivel);
+
+  const txtEl = document.getElementById(txtId);
+  txtEl.textContent = nivel.texto;
+  txtEl.style.color = nivel.cor;
 
   const match = document.getElementById(matchId);
   if (!s2) { match.textContent = ''; match.className = 'match-text'; }
   else if (s1 === s2) { match.textContent = 'As senhas coincidem'; match.className = 'match-text match-ok'; }
   else { match.textContent = 'As senhas não coincidem'; match.className = 'match-text match-no'; }
 }
-function avaliarSenha()  { avaliarCampos('senha1', 'senha2', 'strengthFill', 'strengthText', 'matchText'); }
-function avaliarSenha2() { avaliarCampos('novaSenha1', 'novaSenha2', 'strengthFill2', 'strengthText2', 'matchText2'); }
+
+function avaliarSenha()  { avaliarCampos('senha1', 'senha2', 'segments1', 'strengthText', 'matchText'); }
+function avaliarSenha2() { avaliarCampos('novaSenha1', 'novaSenha2', 'segments2', 'strengthText2', 'matchText2'); }
 
 /* =========================================================
    GERA CÓDIGO
