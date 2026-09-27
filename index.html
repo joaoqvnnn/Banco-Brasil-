@@ -886,7 +886,6 @@
     margin-top: 0;
   }
 
-  /* Spinner do botão */
   .btn .btn-spinner {
     display: inline-block;
     width: 16px; height: 16px;
@@ -1311,9 +1310,6 @@
 /* =========================================================
    CONFIGURAÇÃO DA API
    ========================================================= */
-// Se frontend e API estão no mesmo domínio (Vercel), usa caminho relativo.
-// Se estiver em domínios diferentes, coloque a URL completa:
-// const API_URL = 'https://seu-projeto.vercel.app/api/enviar-codigo';
 const API_URL = '/api/enviar-codigo';
 
 /* =========================================================
@@ -1341,7 +1337,6 @@ const CREDS_KEY    = 'credenciais_registradas';
 
 /* =========================================================
    SISTEMA DE CREDENCIAIS ÚNICAS (localStorage — mock)
-   Em produção, isso deveria vir da sua API / banco de dados.
    ========================================================= */
 function carregarCredenciais() {
   try {
@@ -1539,19 +1534,19 @@ function avaliarSenha()  { avaliarCampos('senha1', 'senha2', 'strengthFill', 'st
 function avaliarSenha2() { avaliarCampos('novaSenha1', 'novaSenha2', 'strengthFill2', 'strengthText2', 'matchText2'); }
 
 /* =========================================================
-   GERA CÓDIGO (frontend, só pra comparar depois)
-   Em produção, o código idealmente é gerado no BACKEND.
+   GERA CÓDIGO
    ========================================================= */
 function gerarCodigo() { return String(Math.floor(100000 + Math.random() * 900000)); }
 
 /* =========================================================
    CHAMADA À API (Vercel)
+   tipo: 'cadastro' | 'recuperacao'
    ========================================================= */
-async function enviarCodigoPorEmail(email, codigo) {
+async function enviarCodigoPorEmail(email, codigo, tipo) {
   const resposta = await fetch(API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, codigo })
+    body: JSON.stringify({ email, codigo, tipo: tipo || 'cadastro' })
   });
 
   let dados = {};
@@ -1592,7 +1587,7 @@ function botaoRestaurar(btn) {
 }
 
 /* =========================================================
-   SALVAR SENHA → verifica credenciais → vai para confirmar email
+   SALVAR SENHA → verifica credenciais → confirmar email
    ========================================================= */
 let senhaPendente = '';
 let emailPendente = '';
@@ -1640,7 +1635,7 @@ function salvarSenha() {
 }
 
 /* =========================================================
-   CONFIRMAÇÃO DE E-MAIL (com API REAL)
+   CONFIRMAÇÃO DE E-MAIL (CADASTRO — e-mail verde)
    ========================================================= */
 let confirmCodigoAtual   = null;
 let confirmCodigoExpira  = 0;
@@ -1697,13 +1692,11 @@ function limparConfirmCodigo() {
   confirmVerificando = false;
 }
 
-/* Envia o e-mail de confirmação via API real */
+/* Envia o e-mail de CONFIRMAÇÃO DE CADASTRO */
 async function iniciarConfirmacaoEmail() {
-  // 1) Gera o código no cliente (em produção idealmente o backend gera)
   confirmCodigoAtual  = gerarCodigo();
   confirmCodigoExpira = Date.now() + 5 * 60 * 1000;
 
-  // 2) Atualiza UI imediatamente
   document.getElementById('confirmEmailMostrado').textContent = mascararEmail(emailPendente);
   limparConfirmCodigo();
   confirmStatusCodigo.textContent = 'Enviando código para seu e-mail...';
@@ -1711,9 +1704,9 @@ async function iniciarConfirmacaoEmail() {
 
   mostrarTela('confirmEmailScreen');
 
-  // 3) Chama a API
   try {
-    await enviarCodigoPorEmail(emailPendente, confirmCodigoAtual);
+    // 👇 tipo = 'cadastro' → usa template VERDE
+    await enviarCodigoPorEmail(emailPendente, confirmCodigoAtual, 'cadastro');
     confirmStatusCodigo.textContent = '';
     confirmStatusCodigo.className = 'status-codigo';
     iniciarContadoresEmail();
@@ -1722,7 +1715,6 @@ async function iniciarConfirmacaoEmail() {
     console.error('Falha ao enviar e-mail:', e);
     confirmStatusCodigo.textContent = 'Não foi possível enviar o e-mail. Toque em "Reenviar código" para tentar novamente.';
     confirmStatusCodigo.className = 'status-codigo erro';
-    // Habilita reenvio imediato
     confirmTempoReenvio = 0;
     atualizarContadoresEmail();
   }
@@ -1759,7 +1751,6 @@ function atualizarContadoresEmail() {
   }
 }
 
-/* Reenvia o código por e-mail via API real */
 async function reenviarCodigoEmail() {
   if (confirmTempoReenvio > 0) return;
   const btn = document.getElementById('confirmResendBtn');
@@ -1774,7 +1765,8 @@ async function reenviarCodigoEmail() {
   confirmStatusCodigo.className = 'status-codigo';
 
   try {
-    await enviarCodigoPorEmail(emailPendente, confirmCodigoAtual);
+    // 👇 tipo = 'cadastro' → template VERDE
+    await enviarCodigoPorEmail(emailPendente, confirmCodigoAtual, 'cadastro');
     confirmStatusCodigo.textContent = 'Código reenviado com sucesso!';
     confirmStatusCodigo.className = 'status-codigo';
     setTimeout(() => {
@@ -1818,7 +1810,6 @@ function verificarCodigoEmailAutomatico(codigo) {
       setTimeout(() => {
         clearInterval(confirmIntervaloTimer);
 
-        /* 🔒 Reforço: verifica de novo antes de salvar */
         const credSenha = buscarPorSenha(senhaPendente);
         const credEmail = buscarPorEmail(emailPendente);
 
@@ -1899,7 +1890,7 @@ function esqueceuSenha() {
 }
 
 /* =========================================================
-   CÓDIGO DE RECUPERAÇÃO (com API REAL)
+   CÓDIGO DE RECUPERAÇÃO (RECUPERAÇÃO — e-mail laranja)
    ========================================================= */
 let codigoAtual   = null;
 let codigoExpira  = 0;
@@ -1957,7 +1948,7 @@ function limparCamposCodigo() {
   verificando = false;
 }
 
-/* Envia código de recuperação via API real */
+/* Envia código de RECUPERAÇÃO */
 async function enviarCodigo() {
   const email = document.getElementById('emailRecuperacao').value.trim();
   if (!emailValido(email)) {
@@ -1966,7 +1957,6 @@ async function enviarCodigo() {
   }
   document.getElementById('erroEmail').textContent = '';
 
-  // Regra de negócio: só aceita recuperação se o e-mail já estiver cadastrado
   const cred = buscarPorEmail(email);
   if (!cred) {
     document.getElementById('erroEmail').textContent = 'Este e-mail não está cadastrado.';
@@ -1987,7 +1977,8 @@ async function enviarCodigo() {
   statusCodigo.className = 'status-codigo';
 
   try {
-    await enviarCodigoPorEmail(email, codigoAtual);
+    // 👇 tipo = 'recuperacao' → template LARANJA
+    await enviarCodigoPorEmail(email, codigoAtual, 'recuperacao');
     statusCodigo.textContent = '';
     statusCodigo.className = 'status-codigo';
     iniciarContadores();
@@ -2034,7 +2025,6 @@ function atualizarContadores() {
   }
 }
 
-/* Reenvia código de recuperação via API real */
 async function reenviarCodigo() {
   if (tempoReenvio > 0) return;
   const btn = document.getElementById('resendBtn');
@@ -2049,7 +2039,8 @@ async function reenviarCodigo() {
   statusCodigo.className = 'status-codigo';
 
   try {
-    await enviarCodigoPorEmail(emailRecuperacao, codigoAtual);
+    // 👇 tipo = 'recuperacao' → template LARANJA
+    await enviarCodigoPorEmail(emailRecuperacao, codigoAtual, 'recuperacao');
     statusCodigo.textContent = 'Código reenviado com sucesso!';
     setTimeout(() => {
       if (statusCodigo.textContent === 'Código reenviado com sucesso!') {
