@@ -4,14 +4,20 @@ const crypto = require('crypto');
 /* =========================================================
    🔧 CONFIGURAÇÃO DA LOJA E LINKS
    ========================================================= */
-const NOME_LOJA  = 'Minha Lojinha';
-const CNPJ_LOJA  = '00.000.000/0001-00';
-const HORARIO    = 'Segunda a sábado, 08h às 20h';
-const EMAIL_SUPORTE = 'suporte@minhalojinha.com.br';
+const NOME_LOJA      = 'Minha Lojinha';
+const CNPJ_LOJA      = '00.000.000/0001-00';
+const HORARIO        = 'Segunda a sábado, 08h às 20h';
+const EMAIL_SUPORTE  = 'suporte@minhalojinha.com.br';
+const BASE_URL       = 'https://xixy.vercel.app';
 
-// ⚠️ SEU DOMÍNIO VERCEL
-const BASE_URL = 'https://xixy.vercel.app'; 
+/* =========================================================
+   🖼️ URL DA LOGO (SUBSTITUA PELO LINK DIRETO DA SUA IMAGEM)
+   ========================================================= */
+const LOGO_URL = 'https://i.postimg.cc/SEU-LINK-AQUI/logo.png';
 
+/* =========================================================
+   ENDPOINT
+   ========================================================= */
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -38,19 +44,18 @@ module.exports = async (req, res) => {
       },
     });
 
-    // Gera token único
-    const token = crypto.randomBytes(32).toString('hex');
+    // Gera código de 6 dígitos
+    const codigo = crypto.randomInt(100000, 999999).toString();
 
     /* 
-       🔴 AQUI VOCÊ SALVA O TOKEN NO SEU BANCO DE DADOS
+       🔴 AQUI VOCÊ SALVA O CÓDIGO NO SEU BANCO DE DADOS
        Exemplo:
-       await db.salvarToken({ email, token, tipo, expiraEm: Date.now() + 30 * 60 * 1000 });
-       (Token expira em 30 minutos)
+       await db.salvarCodigo({ email, codigo, tipo, expiraEm: Date.now() + 5 * 60 * 1000 });
     */
 
     const mail = ehRecuperacao
-      ? montarEmailRecuperacao(email, token)
-      : montarEmailBloqueio(email, token);
+      ? montarEmailRecuperacao(email, codigo)
+      : montarEmailCadastro(email, codigo);
 
     await transporter.sendMail({
       from: `"${NOME_LOJA}" <${process.env.GMAIL_USER}>`,
@@ -69,9 +74,9 @@ module.exports = async (req, res) => {
 };
 
 /* =========================================================
-   FUNÇÃO AUXILIAR: CONSTRUIR O CORPO DO E-MAIL
+   FUNÇÃO AUXILIAR: CONSTRUIR O CORPO DO E-MAIL (PADRÃO FINTECH)
    ========================================================= */
-function construirTemplateEmail({ titulo, subtitulo, textoPrincipal, botaoTexto, botaoLink, rodapeTexto }) {
+function construirTemplateEmail({ titulo, subtitulo, textoPrincipal, codigo, rodapeTexto }) {
   return `
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -81,75 +86,82 @@ function construirTemplateEmail({ titulo, subtitulo, textoPrincipal, botaoTexto,
 <title>${titulo}</title>
 <style>
   @media (prefers-color-scheme: dark) {
-    .corpo-email { background-color: #0f172a !important; }
-    .cartao-email { background-color: #1e293b !important; border-color: #334155 !important; }
-    .texto-principal { color: #e2e8f0 !important; }
-    .texto-secundario { color: #94a3b8 !important; }
-    .linha-divisoria { border-color: #334155 !important; }
-    .botao-cta { background-color: #f8fafc !important; color: #0f172a !important; }
-    .rodape-texto { color: #64748b !important; }
+    .corpo-email { background-color: #000000 !important; }
+    .cartao-email { background-color: #111111 !important; border-color: #262626 !important; }
+    .texto-principal { color: #f5f5f5 !important; }
+    .texto-secundario { color: #a3a3a3 !important; }
+    .linha-divisoria { border-color: #262626 !important; }
+    .rodape-texto { color: #6b7280 !important; }
+    .codigo-box { background-color: #1a1a1a !important; border-color: #333333 !important; }
+    .codigo-texto { color: #ffffff !important; }
   }
 </style>
 </head>
-<body style="margin:0; padding:0; background-color:#f1f5f9; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="corpo-email" style="background-color:#f1f5f9; padding:40px 16px;">
+<body style="margin:0; padding:0; background-color:#f4f4f5; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="corpo-email" style="background-color:#f4f4f5; padding:40px 16px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:520px;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:560px;">
+
+          <!-- LOGO DA LOJA -->
+          <tr>
+            <td style="padding-bottom:32px;">
+              <img src="${LOGO_URL}" alt="${NOME_LOJA}" width="130" style="display:block; width:130px; max-width:130px; height:auto; border:0; outline:none; text-decoration:none;">
+            </td>
+          </tr>
+
+          <!-- CARTÃO PRINCIPAL -->
           <tr>
             <td>
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:24px;">
-                <tr>
-                  <td align="center">
-                    <h1 style="margin:0; font-size:22px; font-weight:800; color:#1e293b; letter-spacing:-0.5px;">${NOME_LOJA}</h1>
-                  </td>
-                </tr>
-              </table>
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="cartao-email" style="background-color:#ffffff; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden;">
 
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="cartao-email" style="background-color:#ffffff; border:1px solid #e2e8f0; border-radius:16px; overflow:hidden;">
+                <!-- CONTEÚDO -->
                 <tr>
-                  <td style="padding:40px 36px;">
-                    <h2 class="texto-principal" style="margin:0 0 16px; font-size:20px; font-weight:700; color:#0f172a; text-align:center; line-height:1.3;">${titulo}</h2>
-                    <p class="texto-secundario" style="margin:0 0 32px; font-size:15px; line-height:1.6; color:#475569; text-align:center;">${subtitulo}</p>
-                    <p class="texto-secundario" style="margin:0 0 32px; font-size:15px; line-height:1.6; color:#475569; text-align:center;">${textoPrincipal}</p>
+                  <td style="padding:48px 40px;">
+                    <h1 class="texto-principal" style="margin:0 0 16px; font-size:24px; font-weight:700; color:#111827; line-height:1.3;">${titulo}</h1>
+                    <p class="texto-secundario" style="margin:0 0 24px; font-size:15px; line-height:1.6; color:#4b5563;">${subtitulo}</p>
+                    <p class="texto-secundario" style="margin:0 0 32px; font-size:15px; line-height:1.6; color:#4b5563;">${textoPrincipal}</p>
+
+                    <!-- BLOCO DO CÓDIGO -->
                     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                       <tr>
                         <td align="center">
-                          <a href="${botaoLink}" class="botao-cta" style="display:inline-block; padding:16px 32px; background-color:#0f172a; color:#ffffff; text-decoration:none; border-radius:8px; font-size:15px; font-weight:600; width:100%; max-width:280px; box-sizing:border-box; text-align:center;">${botaoTexto}</a>
+                          <div class="codigo-box" style="display:inline-block; padding:20px 40px; background-color:#f9fafb; border:1px solid #e5e7eb; border-radius:8px;">
+                            <span class="codigo-texto" style="font-size:36px; font-weight:800; letter-spacing:12px; color:#111827; font-family:monospace, 'Courier New', Courier;">${codigo}</span>
+                          </div>
                         </td>
                       </tr>
                     </table>
-                    <p class="texto-secundario" style="margin:32px 0 0; font-size:13px; line-height:1.6; color:#64748b; text-align:center;">${rodapeTexto}</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="linha-divisoria" style="border-top:1px solid #e2e8f0; padding:24px 36px; background-color:#f8fafc;">
-                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
-                      <tr><td align="center" style="padding-bottom:16px;"><span class="texto-secundario" style="font-size:11px; font-weight:700; color:#94a3b8; letter-spacing:1.5px; text-transform:uppercase;">Fale com a gente</span></td></tr>
-                      <tr>
-                        <td align="center">
-                          <a href="mailto:${EMAIL_SUPORTE}" style="color:#475569; text-decoration:none; font-size:13px; font-weight:600; margin:0 8px;">E-mail</a>
-                          <span style="color:#cbd5e1;">|</span>
-                          <a href="#" style="color:#475569; text-decoration:none; font-size:13px; font-weight:600; margin:0 8px;">WhatsApp</a>
-                        </td>
-                      </tr>
-                      <tr><td align="center" style="padding-top:12px;"><span class="texto-secundario" style="font-size:12px; color:#94a3b8;">Atendimento ${HORARIO.toLowerCase()}.</span></td></tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
 
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top:24px;">
-                <tr>
-                  <td align="center" class="rodape-texto" style="font-size:12px; color:#94a3b8; line-height:1.6;">
-                    <strong style="color:#64748b;">${NOME_LOJA}</strong> — CNPJ ${CNPJ_LOJA}<br>
-                    Este é um e-mail automático. Por favor, não responda.<br>
-                    © 2025 ${NOME_LOJA}.
+                    <p class="texto-secundario" style="margin:32px 0 0; font-size:14px; line-height:1.6; color:#6b7280;">${rodapeTexto}</p>
                   </td>
                 </tr>
+
+                <!-- RODAPÉ DO CARTÃO -->
+                <tr>
+                  <td class="linha-divisoria" style="border-top:1px solid #e5e7eb; padding:32px 40px; background-color:#f9fafb;">
+                    <p class="texto-principal" style="margin:0 0 8px; font-size:15px; font-weight:600; color:#111827;">Ficou com alguma dúvida?</p>
+                    <p class="texto-secundario" style="margin:0 0 16px; font-size:14px; line-height:1.6; color:#4b5563;">Acesse nossa <a href="mailto:${EMAIL_SUPORTE}" style="color:#111827; text-decoration:underline;">central de ajuda</a> ou entre em contato conosco.</p>
+                    <p class="texto-secundario" style="margin:0 0 16px; font-size:13px; line-height:1.6; color:#6b7280;">Esta é uma mensagem automática. Pedimos que não responda esse e-mail pois não é possível dar continuidade ao seu atendimento por aqui.</p>
+                    <p class="texto-secundario" style="margin:0; font-size:13px; line-height:1.6; color:#6b7280;">Você está recebendo este e-mail porque se cadastrou na ${NOME_LOJA}.</p>
+                  </td>
+                </tr>
+
               </table>
             </td>
           </tr>
+
+          <!-- RODAPÉ FINAL (FORA DO CARTÃO) -->
+          <tr>
+            <td style="padding-top:32px;">
+              <p class="rodape-texto" style="margin:0 0 4px; font-size:12px; color:#6b7280; line-height:1.5;">
+                <strong style="color:#374151;">${NOME_LOJA}</strong><br>
+                CNPJ ${CNPJ_LOJA}<br>
+                Atendimento: ${HORARIO}
+              </p>
+            </td>
+          </tr>
+
         </table>
       </td>
     </tr>
@@ -160,75 +172,66 @@ function construirTemplateEmail({ titulo, subtitulo, textoPrincipal, botaoTexto,
 }
 
 /* =========================================================
-   TEMPLATE 1 — REDEFINIÇÃO DE SENHA (LINK)
+   TEMPLATE 1 — CONFIRMAÇÃO DE CADASTRO (CÓDIGO)
    ========================================================= */
-function montarEmailRecuperacao(email, token) {
-  const assunto = `Redefinição de senha para sua conta`;
-  
-  // Link que abre a página de redefinição no Vercel
-  const linkRedefinicao = `${BASE_URL}/redefinir-senha.html?token=${token}&email=${encodeURIComponent(email)}`;
+function montarEmailCadastro(email, codigo) {
+  const assunto = `Confirme seu e-mail — ${NOME_LOJA}`;
 
   const texto = `
-${NOME_LOJA.toUpperCase()}
-REDEFINIÇÃO DE SENHA
+${NOME_LOJA}
+CONFIRMAÇÃO DE E-MAIL
 
 Olá,
 
-Recebemos uma solicitação para redefinir a senha da sua conta.
-Para criar uma nova senha, acesse o link abaixo:
+Recebemos seu cadastro. Use o código abaixo para confirmar seu e-mail:
 
-${linkRedefinicao}
+${codigo}
 
-Se você não solicitou isso, ignore este e-mail.
-
----
-${NOME_LOJA} - CNPJ: ${CNPJ_LOJA} - Atendimento: ${HORARIO}
-  `.trim();
-
-  const html = construirTemplateEmail({
-    titulo: 'Criar nova senha',
-    subtitulo: `Olá, recebemos uma solicitação para redefinir a senha da sua conta.`,
-    textoPrincipal: 'Clique no botão abaixo para criar uma nova senha de acesso. Por motivos de segurança, este link expira em 30 minutos.',
-    botaoTexto: 'Criar nova senha',
-    botaoLink: linkRedefinicao,
-    rodapeTexto: 'Se você não solicitou esta alteração, nenhuma ação é necessária. Sua senha atual continua válida.'
-  });
-
-  return { assunto, texto, html };
-}
-
-/* =========================================================
-   TEMPLATE 2 — BLOQUEIO DE ACESSO ("NÃO FUI EU")
-   ========================================================= */
-function montarEmailBloqueio(email, token) {
-  const assunto = `Segurança da conta: Verificação de acesso`;
-  
-  // Link que aciona o bloqueio
-  const linkBloqueio = `${BASE_URL}/api/bloquear-acesso.html?token=${token}&email=${encodeURIComponent(email)}`;
-
-  const texto = `
-${NOME_LOJA.toUpperCase()}
-VERIFICAÇÃO DE ACESSO
-
-Olá,
-
-Notamos uma tentativa de acesso à sua conta.
-
-Se você NÃO reconhece esta atividade e deseja bloquear o acesso imediatamente, acesse:
-
-${linkBloqueio}
+Este código expira em 5 minutos.
 
 ---
 ${NOME_LOJA} - CNPJ: ${CNPJ_LOJA}
   `.trim();
 
   const html = construirTemplateEmail({
-    titulo: 'Verificação de acesso',
-    subtitulo: `Notamos uma tentativa de acesso à sua conta vinculada a este e-mail.`,
-    textoPrincipal: 'Se foi você, não se preocupe. Nenhuma ação é necessária.<br><br>Se você <strong>não reconhece</strong> esta atividade e deseja bloquear o acesso imediatamente, clique no botão abaixo.',
-    botaoTexto: 'Bloquear acesso',
-    botaoLink: linkBloqueio,
-    rodapeTexto: 'Se você não solicitou isso, sua conta está segura, mas recomendamos alterar sua senha.'
+    titulo: 'Confirme seu e-mail',
+    subtitulo: `Olá,`,
+    textoPrincipal: `Recebemos seu cadastro na ${NOME_LOJA}. Para ativar sua conta, utilize o código de verificação abaixo:`,
+    codigo: codigo,
+    rodapeTexto: 'Este código expira em 5 minutos. Se você não solicitou este cadastro, ignore este e-mail.'
+  });
+
+  return { assunto, texto, html };
+}
+
+/* =========================================================
+   TEMPLATE 2 — RECUPERAÇÃO DE SENHA (CÓDIGO)
+   ========================================================= */
+function montarEmailRecuperacao(email, codigo) {
+  const assunto = `Recuperação de senha — ${NOME_LOJA}`;
+
+  const texto = `
+${NOME_LOJA}
+RECUPERAÇÃO DE SENHA
+
+Olá,
+
+Recebemos uma solicitação para redefinir sua senha. Use o código abaixo para continuar:
+
+${codigo}
+
+Este código expira em 5 minutos.
+
+---
+${NOME_LOJA} - CNPJ: ${CNPJ_LOJA} - Atendimento: ${HORARIO}
+  `.trim();
+
+  const html = construirTemplateEmail({
+    titulo: 'Redefinição de senha',
+    subtitulo: `Olá,`,
+    textoPrincipal: `Recebemos uma solicitação para redefinir a senha da sua conta. Utilize o código de verificação abaixo para continuar:`,
+    codigo: codigo,
+    rodapeTexto: 'Este código expira em 5 minutos. Se você não solicitou esta alteração, ignore este e-mail.'
   });
 
   return { assunto, texto, html };
